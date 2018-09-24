@@ -4,7 +4,7 @@ Create SSL certificates on the fly with HAProxy. Certs are generated dynamically
 
 ### Motivation
 
-- Internal Domains
+- Internal Domains + HTTPS-only
     - No wildcard certs possible, because of domain structure with multiple (sub)levels
 
 - Internal Root-CA which creates certs and is imported in clients (browsers etc.) 
