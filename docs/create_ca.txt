@@ -1,0 +1,33 @@
+Create CA certificate:
+----------------------
+
+cp /usr/lib/ssl/openssl.cnf rootca.cnf
+
+openssl genrsa -out ca.key 2048
+
+openssl req -new -x509 -subj "/CN=MyCA" -extensions v3_ca -days 3650 -key ca.key -sha256 -out ca.crt -config rootca.cnf
+
+openssl x509 -in ca.crt -text -noout
+
+
+Create Server certificate signed by CA:
+---------------------------------------
+
+Prepare:
+
+cp /usr/lib/ssl/openssl.cnf server_cert.cnf
+
+[ v3_req ]  :
+
+subjectAltName = placeholder
+
+
+[ req ]:
+
+req_extensions = v3_req
+
+
+Create Server cert:
+
+Create cert with 'create-cert.sh'
+
