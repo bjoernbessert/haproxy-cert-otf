@@ -37,7 +37,7 @@ Create SSL certificates on the fly with HAProxy. Certs are generated dynamically
 
 - Do not start HAProxy as root (execute supervisortcl via sudo as haproxy user)
 
-- Mount (host-)volume for certs, if container is destroyed, certs doesnt have to generated again
+- Mount (host-)volume for certs. If container is destroyed, certs doesnt have to generated again
 
 - Auth-header (token or something) for HTTP-method
 
