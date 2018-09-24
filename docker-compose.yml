@@ -1,7 +1,5 @@
-
 version: "3"
 services:
-
   haproxy:
     hostname: haproxy
     image: bjoernbessert/haproxy-cert-otf
@@ -10,7 +8,6 @@ services:
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
-
   apache:
     hostname: apache
     image: bjoernbessert/apache-cert-otf
