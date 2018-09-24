@@ -13,7 +13,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua a Cert is 
   - At the moment its not possible in HAProxy to add certs at runtime, A reload is needed after adding a cert. This feature will be possible available in HAProxy 1.9.
     - If you have a single HAProxy instance, you can't reload this instance itself, because an connection is already established and would be stay on the old process and will not get the newly generated cert
 
-### Using
+### Using/Demo
 
 - Install docker and docker-compose
 
