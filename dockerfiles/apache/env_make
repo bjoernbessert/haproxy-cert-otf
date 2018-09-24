@@ -1,0 +1,5 @@
+
+NS = bjoernbessert
+REPO = apache-cert-otf
+VERSION ?= latest
+

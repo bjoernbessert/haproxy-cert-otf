@@ -1,0 +1,5 @@
+
+NS = bjoernbessert
+REPO = haproxy-cert-otf
+VERSION ?= latest
+
