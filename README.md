@@ -15,7 +15,7 @@ Create SSL certificates on the fly with HAProxy. Certs are generated dynamically
 
 ### Using
 
-- Build all container-images from dockerfiles/
+- Build all container-images from dockerfiles/ (make build)
 
 - Choose your method:
    - Local CA: Import the root-CA(ca.crt) into your client/browser or replace the ca-files with your own
