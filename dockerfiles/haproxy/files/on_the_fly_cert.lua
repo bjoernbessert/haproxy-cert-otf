@@ -76,15 +76,12 @@ end
 function cert_otf(txn, arg)
 
    core.log(core.info, "SNI detected: " .. txn.sf:req_ssl_sni())
-
    local sni_value = txn.sf:req_ssl_sni()
 
    local cert_file = "/etc/haproxy/certs/" .. sni_value .. ".pem"
-
    --- core.log(core.info, cert_file)
 
    cert_file_existing = io.open(cert_file, "r")
-
    if cert_file_existing == nil then
 
      core.log(core.info, "WARNING: No Cert found, generating one")
@@ -98,8 +95,6 @@ function cert_otf(txn, arg)
      core.log(core.info, "OK: Cert already there")
    end
 
-
 end
 
 core.register_action("cert_otf", { "tcp-req" }, cert_otf)
-
