@@ -46,7 +46,7 @@ Create SSL certificates on the fly with HAProxy. Certs are generated dynamically
 
 ### TODO
 
-- Complete HTTP-method: get_cert_via_http()
+- Finalize HTTP-method: get_cert_via_http()
 
 ### Acknowledgments
 
