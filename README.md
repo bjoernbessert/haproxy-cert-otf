@@ -1,6 +1,7 @@
 # haproxy-cert-otf
 
-Create SSL certificates on the fly with HAProxy. Certs are generated dynamically on the first request.
+Create SSL certificates on the fly with HAProxy.
+ith the help of Lua Certs are generated dynamically on the first request.
 
 ### Motivation
 
