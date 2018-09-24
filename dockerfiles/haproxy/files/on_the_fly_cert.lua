@@ -67,12 +67,11 @@ function get_cert_via_http()
 end
 
 function get_cert_from_local_ca(domain)
-
+	
     core.log(core.info, "Generate Cert trough local CA for domain: " .. domain)
     os.execute('/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh ' .. domain)
-
+	
 end
-
 
 function cert_otf(txn, arg)
 
