@@ -47,7 +47,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua a Cert is 
 
 - Implement locking mechanism (preventing the generation of certificates for same FQDN at the same time)
 
-- Implement haproxy reload? (through supervisor) ? - maybe faster than restart
+- Implement haproxy reload? (through supervisor?) - maybe faster than restart
      - maybe try supervisor + "-W" from haproxy
 
 ### Acknowledgments
