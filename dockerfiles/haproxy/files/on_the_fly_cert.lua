@@ -32,7 +32,6 @@ function create_sock()
         return sock
 end
 
-
 function get_cert_via_http()
 
     core.log(core.info, "Get Cert via HTTP ...")
@@ -65,9 +64,7 @@ function get_cert_via_http()
       end
 
     end
-
 end
-
 
 function get_cert_from_local_ca(domain)
 
