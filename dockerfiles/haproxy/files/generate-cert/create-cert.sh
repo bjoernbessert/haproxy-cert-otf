@@ -18,8 +18,6 @@ openssl x509 -req -extensions v3_req -days 3650 -sha256 -in ${FQDN}.csr -CA ../c
 
 cat ${FQDN}.crt ../ca.crt ${FQDN}.key > ${FQDN}.pem
 
-
 mv -f ${FQDN}.pem ${HAPROXY_CERT_DIR}
 
 /usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back
-
