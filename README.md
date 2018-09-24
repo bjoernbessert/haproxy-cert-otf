@@ -27,6 +27,10 @@ Create SSL certificates on the fly with HAProxy. Certs are generated dynamically
 
 - Certificates should now be generated on the fly, client/browser should not display any warning
 
+### TODO
+
+- Finalize HTTP-method: get_cert_via_http()
+
 ### Possible Improvements
 
 - Do not start HAProxy as root (execute supervisortcl via sudo as haproxy user)
@@ -43,10 +47,6 @@ Create SSL certificates on the fly with HAProxy. Certs are generated dynamically
 
 - Implement haproxy reload? (through supervisor) ? - maybe faster than restart
      - maybe try supervisor + "-W" from haproxy
-
-### TODO
-
-- Finalize HTTP-method: get_cert_via_http()
 
 ### Acknowledgments
 
