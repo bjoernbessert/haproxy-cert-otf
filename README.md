@@ -4,7 +4,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Motivation
 
-- Internal Domains + HTTPS-only
+- Internal Domains (HTTPS-only)
 
     - No wildcard certs possible, because of domain structure with multiple (sub)levels
     
