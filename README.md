@@ -15,7 +15,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 - HAProxy configs and LUA script: [Link](dockerfiles/haproxy/files)
 
 - Why 2 HAProxy processes?
-  - At the moment its not possible in HAProxy to add certs at runtime. A reload is needed after adding a cert. Maybe it will be possible in HAProxy 1.9.
+  - At the moment it's not possible in HAProxy to add certs at runtime (maybe this will be possible in HAProxy 1.9). Therefore a reload is needed after adding a cert
   - If you have a single HAProxy instance, you can't reload this instance itself, because an connection is already established and would be stay on the old process and will not get the newly generated cert
 
 
@@ -26,7 +26,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 - Build all container-images from dockerfiles/ (make build)
 
 - Choose your certificate generation method:
-   - Local CA: Import the root-CA (ca.crt) into your client/browser or replace the ca-files with your own
+   - Local CA: Import the Root CA (ca.crt) into your client/browser or replace the ca-files with your own
    - TODO: HTTP-method: Set an url where you can get the certs in *.pem-format
 
 - docker-compose up -d
