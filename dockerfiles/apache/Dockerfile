@@ -8,7 +8,6 @@ RUN echo Europe/Berlin >/etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
 
 RUN apt-get update && apt-get install -yq apache2
-
 RUN mkdir -p /var/run/apache2
 
 COPY files/start.sh /usr/local/bin/start.sh
