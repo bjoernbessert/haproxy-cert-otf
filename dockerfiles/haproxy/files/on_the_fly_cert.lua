@@ -36,15 +36,14 @@ function get_cert_via_http(domain)
 
     core.log(core.info, "Get Cert via HTTP ...")
 
-     local result, respcode, respheaders = http.request {
+    local result, respcode, respheaders = http.request {
 		--- url = "http://" .. addr .. path,
-                --- url = "http://internal-ca.example.local/ca-api/v1/getcert?domain=sub1.example.local",
                 --- Request certificate from API and get back PEM-File (Content-Type: text/plain)
 		url = "http://internal-ca.example.local/ca-api/v1/getcert/" .. domain .. ".pem",                
                 create = create_sock,
                 -- Disable redirects, because DNS does not work here.
                 redirect = false
-     }
+    }
 
     --- print( result )
     --- print( respcode )
