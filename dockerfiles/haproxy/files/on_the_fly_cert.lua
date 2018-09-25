@@ -32,14 +32,15 @@ function create_sock()
         return sock
 end
 
-function get_cert_via_http()
+function get_cert_via_http(domain)
 
     core.log(core.info, "Get Cert via HTTP ...")
 
      local result, respcode, respheaders = http.request {
-                --- url = "http://" .. addr .. path,
+		--- url = "http://" .. addr .. path,
                 --- url = "http://internal-ca.example.local/ca-api/v1/getcert?domain=sub1.example.local",
-                url = "http://192.168.217.131/sub1.example.local.pem",
+                --- Request certificate from API and get back PEM-File (Content-Type: text/plain)
+		url = "http://internal-ca.example.local/ca-api/v1/getcert/" .. domain .. ".pem",                
                 create = create_sock,
                 -- Disable redirects, because DNS does not work here.
                 redirect = false
@@ -88,7 +89,7 @@ function cert_otf(txn, arg)
 
      --- TODO: Choose method here by variable
 
-     --- get_cert_via_http()
+     --- get_cert_via_http(sni_value)
      get_cert_from_local_ca(sni_value)
 
    else
