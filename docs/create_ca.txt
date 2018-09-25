@@ -29,5 +29,5 @@ req_extensions = v3_req
 
 Create Server cert:
 
-Create cert with 'create-cert.sh'
+Cert is created dynamically through 'create-cert.sh'
 
