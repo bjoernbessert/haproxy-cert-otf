@@ -73,7 +73,7 @@ function get_cert_from_local_ca(domain)
 	
 end
 
-function cert_otf(txn, arg)
+function cert_otf(txn)
 
    core.log(core.info, "SNI detected: " .. txn.sf:req_ssl_sni())
    local sni_value = txn.sf:req_ssl_sni()
