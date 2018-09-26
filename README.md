@@ -25,9 +25,10 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 - Build all container-images from dockerfiles/ (make build)
 
-- Choose your certificate generation method:
-   - Local CA: Import the Root CA (ca.crt) into your client/browser or replace the ca-files with your own
-   - TODO: HTTP-method: Set an url where you can get the certs in *.pem-format
+- Choose your certificate generation method: [Link](dockerfiles/haproxy/files/on_the_fly_cert.lua) 
+    - get_cert_method
+     - local_ca: Import the Root CA (ca.crt) [Link](dockerfiles/haproxy/files/generate-cert) into your client/browser or replace the ca-files with your own
+     - http: Set an URL in get_cert_via_http() [Link](dockerfiles/haproxy/files/on_the_fly_cert.lua)  where you can get the certs in *.pem-format
 
 - docker-compose up -d
 
