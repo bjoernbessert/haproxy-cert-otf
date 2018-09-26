@@ -8,7 +8,8 @@ RUN echo Europe/Berlin >/etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
 
 RUN apt-get update && apt-get install -yq software-properties-common
-RUN add-apt-repository -y ppa:vbernat/haproxy-1.8 && apt-get update && apt-get install -yq haproxy=1.8.\* lua-socket openssl socat iputils-ping curl wget less vim psmisc net-tools
+RUN add-apt-repository -y ppa:vbernat/haproxy-1.8 && apt-get update && \
+    apt-get install -yq haproxy=1.8.\* lua-socket openssl socat iputils-ping curl wget less vim psmisc net-tools
 
 RUN apt-get update && apt-get install -yq supervisor
 RUN mkdir -p /var/log/supervisor
