@@ -65,7 +65,7 @@ function get_cert_via_http(domain)
     core.log(core.info, "HTTP-Response Status:" .. respcode)
     
     if result == nil then
-        core.log(core.info, "Failure in http.request call")
+        core.log(core.info, "CRITICAL: Failure in http.request call")
     else
 
       if respcode ~= 200 then
