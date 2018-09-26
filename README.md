@@ -37,7 +37,9 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### TODO
 
-- Finalize HTTP-method: get_cert_via_http()
+- get_cert_via_http()
+  - DNS-Resolving
+  - HTTP-Redirects
 
 ### Possible Improvements
 
