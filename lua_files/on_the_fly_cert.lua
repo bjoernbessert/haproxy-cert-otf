@@ -52,16 +52,13 @@ function get_cert_via_http(domain)
     local fh = io.open(fullpath_tmp, "wb")
 
     local addr = '172.17.0.1'
+    --- local addr = 'internal-ca.example.local'
     local path = '/ca-api/v1/getcert/sub1.example.local'
+    --- local path = '/ca-api/v1/getcert/' .. domain
 
     local result, respcode, respheaders = http.request {
                 --- Request certificate from API and get back PEM-File (Content-Type: text/plain)
-		--- url = "http://internal-ca.example.local/ca-api/v1/getcert/" .. domain,
-		--- url = "http://internal-ca.example.local/ca-api/v1/getcert/sub1.example.local",
-		--- url = "http://172.17.0.1/ca-api/v1/getcert/" .. domain,
-		--- url = "http://172.17.0.1/ca-api/v1/getcert/sub1.example.local",
                 url = "http://" .. addr .. path,
-		--- sink = ltn12.sink.file(io.stdout),
 		sink = ltn12.sink.file(fh),
                 create = create_sock,
                 -- Disable redirects, because DNS does not work here.
