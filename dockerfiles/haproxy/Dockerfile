@@ -9,11 +9,13 @@ RUN echo Europe/Berlin >/etc/timezone && \
 
 RUN apt-get update && apt-get install -yq software-properties-common
 RUN add-apt-repository -y ppa:vbernat/haproxy-1.8 && apt-get update && \
-    apt-get install -yq haproxy=1.8.\* lua-socket openssl socat iputils-ping curl wget less vim psmisc net-tools
+    apt-get install -yq haproxy=1.8.\* lua-socket openssl
 
 RUN apt-get update && apt-get install -yq supervisor
 RUN mkdir -p /var/log/supervisor
 COPY files/supervisord.conf /etc/supervisor/supervisord.conf
+
+RUN apt-get update && apt-get install -yq socat iputils-ping curl wget less vim psmisc net-tools
 
 COPY files/generate-cert /opt/generate-cert
 
