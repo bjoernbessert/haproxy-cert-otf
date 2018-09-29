@@ -79,7 +79,7 @@ function get_cert_via_http(domain)
           core.log(core.info, "Move cert from tempdir to HAProxy cert dir ...")
           move_cert = os.rename(fullpath_tmp, fullpath_dst)
 
-	  if move_cert then
+          if move_cert then
               core.log(core.info, "Execute HAProxy reload ...")
               os.execute('/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back')
           else
@@ -99,29 +99,29 @@ function get_cert_from_local_ca(domain)
 end
 
 function cert_otf(txn)
+    core.log(core.info, "SNI detected: " .. txn.sf:req_ssl_sni())
 
-   core.log(core.info, "SNI detected: " .. txn.sf:req_ssl_sni())
-   local sni_value = txn.sf:req_ssl_sni()
+    local sni_value = txn.sf:req_ssl_sni()
 
-   local cert_file = "/etc/haproxy/certs/" .. sni_value .. ".pem"
-   --- core.log(core.info, cert_file)
+    local cert_file = "/etc/haproxy/certs/" .. sni_value .. ".pem"
+    --- core.log(core.info, cert_file)
 
-   cert_file_existing = io.open(cert_file, "r")
-   if cert_file_existing == nil then
-       core.log(core.info, "INFORMATIONAL: No Cert found, generating one")
+    cert_file_existing = io.open(cert_file, "r")
+    if cert_file_existing == nil then
+        core.log(core.info, "INFORMATIONAL: No Cert found, generating one")
 
-       --- Choose method
-       if get_cert_method == 'local_ca' then
-           get_cert_from_local_ca(sni_value)
-       elseif get_cert_method == 'http' then
-           get_cert_via_http(sni_value)
-       else
-           core.log(core.info, "CRITICAL: No supported cert generation method found. Not generating any cert!")
-       end
-
-   else
-     core.log(core.info, "OK: Cert already there")
-   end
+        --- Choose method
+        if get_cert_method == 'local_ca' then
+            get_cert_from_local_ca(sni_value)
+        elseif get_cert_method == 'http' then
+            get_cert_via_http(sni_value)
+        else
+            core.log(core.info, "CRITICAL: No supported cert generation method found. Not generating any cert!")
+        end
+		
+    else
+        core.log(core.info, "OK: Cert already there")
+    end
 
 end
 
