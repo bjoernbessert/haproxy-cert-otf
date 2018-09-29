@@ -49,7 +49,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Possible Improvements
 
-- Docker-specific: Do not start HAProxy as root (execute supervisortcl via sudo as haproxy user)
+- Do not start HAProxy as root (execute supervisortcl via sudo as haproxy user)
 
 - Docker-specific: Mount (host-)volume for certs. If container is destroyed, certs doesnt have to generated again
 
