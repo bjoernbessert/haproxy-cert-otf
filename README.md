@@ -49,22 +49,24 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Possible Improvements
 
-- Do not start HAProxy as root (execute supervisortcl via sudo as haproxy user)
+- Docker-specific: Do not start HAProxy as root (execute supervisortcl via sudo as haproxy user)
 
-- Mount (host-)volume for certs. If container is destroyed, certs doesnt have to generated again
+- Docker-specific: Mount (host-)volume for certs. If container is destroyed, certs doesnt have to generated again
 
 - Auth-header (token or something) for HTTP-method
 
 - Implement Lets Encrypt for public domains
 
-- Two separate containers for the HAProxys (then maybe mount a volume with the certs into both containers)
+- Load an index of all existing certs in memory on HAProxy startup (Lua + stick-tables). Would save the filesystem lookups.
 
 - Implement locking mechanism (preventing the generation of certificates for same FQDN at the same time)
   - HAProxy 1.8: Use stick-tables + get/set via Lua (connect with tcp socket to local tcp HAProxy socket to execute commands)
   - HAProxy 1.9: Use stick-tables + get/set directly from Lua
   
 - Implement haproxy reload? (through supervisor?) - maybe faster than restart
-     - maybe try supervisor + "-W" from haproxy
+  - maybe try supervisor + "-W" from haproxy
+
+- Docker-specific: Two separate containers for the HAProxys (then maybe mount a volume with the certs into both containers)
 
 ### Acknowledgments
 
