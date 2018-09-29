@@ -57,11 +57,13 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 - Implement Lets Encrypt for public domains
 
-- Load an index of all existing certs in memory on HAProxy startup (Lua + stick-tables). Would save the filesystem lookups.
+- Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups.
 
 - Implement locking mechanism (preventing the generation of certificates for same FQDN at the same time)
-  - HAProxy 1.8: Use stick-tables + get/set via Lua (connect with tcp socket to local tcp HAProxy socket to execute commands)
-  - HAProxy 1.9: Use stick-tables + get/set directly from Lua
+  - HAProxy 1.8:
+    - Use HAProxy stick-tables + get/set via Lua (connect with tcp socket to local tcp HAProxy socket to execute commands)
+    - Use HAProxy maps + get/set via Lua
+  - HAProxy 1.9: Use HAProxy stick-tables + get/set directly from Lua
   
 - Implement haproxy reload? (through supervisor?) - maybe faster than restart
   - maybe try supervisor + "-W" from haproxy
