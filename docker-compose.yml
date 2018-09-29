@@ -3,6 +3,8 @@ services:
   haproxy:
     hostname: haproxy
     image: bjoernbessert/haproxy-cert-otf
+    volumes:
+      - ./lua_files:/etc/haproxy/lua_files
     depends_on:
       - apache
     ports:

@@ -20,11 +20,10 @@ COPY files/generate-cert /opt/generate-cert
 RUN mkdir /etc/haproxy/certs
 COPY files/fallback.example.local.pem /etc/haproxy/certs/
 
+RUN mkdir /etc/haproxy/lua_files
 RUN rm -f /etc/haproxy/haproxy.cfg
 COPY files/haproxy_front.cfg /etc/haproxy/haproxy_front.cfg
 COPY files/haproxy_back.cfg  /etc/haproxy/haproxy_back.cfg
-
-COPY files/on_the_fly_cert.lua /etc/haproxy/
 
 # For local testing
 COPY files/generate-cert/ca.crt /usr/local/share/ca-certificates/
