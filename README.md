@@ -12,7 +12,9 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Details
 
-- HAProxy configs and LUA script: [Link](dockerfiles/haproxy/files)
+- HAProxy configs: [Link](dockerfiles/haproxy/files)
+
+- LUA script(s): [Link](lua_files)
 
 - Why 2 HAProxy instances?
   - At the moment it's not possible in HAProxy to add certs at runtime (maybe this will be possible in HAProxy 1.9). Therefore a reload is needed after adding a cert
@@ -25,12 +27,14 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 - Build all container-images from dockerfiles/ (make build)
 
-- Choose your certificate generation method: [Link](dockerfiles/haproxy/files/on_the_fly_cert.lua) 
+- Choose your certificate generation method: [Link](lua_files/on_the_fly_cert.lua) 
     - "get_cert_method"
-      - local_ca: Import the Root CA (ca.crt) [Link](dockerfiles/haproxy/files/generate-cert) into your client/browser or replace the ca-files with your own
-      - http: Set an URL in get_cert_via_http() [Link](dockerfiles/haproxy/files/on_the_fly_cert.lua)  where you can get the certs in *.pem-format
+      - local_ca: Import the Root CA (ca.crt) [Link](dockerfiles/haproxy/files/generate-cert) into your client/browser or replace the ca-files with your own (and rebuild haproxy container)
+      - http: Set an URL in get_cert_via_http() [Link](lua_files/on_the_fly_cert.lua)  where you can get the certs in *.pem-format
 
 - docker-compose up -d
+
+- docker-compose logs -f haproxy
 
 - Direct your domain(s) to 127.0.0.1
 
