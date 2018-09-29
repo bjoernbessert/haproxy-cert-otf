@@ -2,7 +2,10 @@
 --- Supported values: local_ca, http
 local get_cert_method = 'local_ca'
 
---- local haproxy_reload_cmd = ''
+local haproxy_certs_dir = "/etc/haproxy/certs/"
+
+local haproxy_reload_cmd = '/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back'
+local cert_generate_cmd = '/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh '
 
 local http = require("socket.http")
 local io = require("io")
@@ -48,12 +51,16 @@ function get_cert_via_http(domain)
     local fullpath_tmp = tmp_workspace_dir .. cert_filename
     local fh = io.open(fullpath_tmp, "wb")
 
+    local addr = '172.17.0.1'
+    local path = '/ca-api/v1/getcert/sub1.example.local'
+
     local result, respcode, respheaders = http.request {
                 --- Request certificate from API and get back PEM-File (Content-Type: text/plain)
 		--- url = "http://internal-ca.example.local/ca-api/v1/getcert/" .. domain,
 		--- url = "http://internal-ca.example.local/ca-api/v1/getcert/sub1.example.local",
 		--- url = "http://172.17.0.1/ca-api/v1/getcert/" .. domain,
-		url = "http://172.17.0.1/ca-api/v1/getcert/sub1.example.local",
+		--- url = "http://172.17.0.1/ca-api/v1/getcert/sub1.example.local",
+                url = "http://" .. addr .. path,
 		--- sink = ltn12.sink.file(io.stdout),
 		sink = ltn12.sink.file(fh),
                 create = create_sock,
@@ -61,7 +68,7 @@ function get_cert_via_http(domain)
                 redirect = false
     }
 
-    core.log(core.info, "HTTP-Response Status:" .. respcode)
+    core.log(core.info, "HTTP-Response Status: " .. respcode)
     
     if result == nil then
         core.log(core.info, "CRITICAL: Failure in http.request call")
@@ -73,7 +80,6 @@ function get_cert_via_http(domain)
 
       if respcode == 200 then
 	
-          local haproxy_certs_dir = "/etc/haproxy/certs/"
           local fullpath_dst = haproxy_certs_dir .. cert_filename
 
           core.log(core.info, "Move cert from tempdir to HAProxy cert dir ...")
@@ -81,7 +87,9 @@ function get_cert_via_http(domain)
 
           if move_cert then
               core.log(core.info, "Execute HAProxy reload ...")
-              os.execute('/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back')
+              --- os.execute('/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back')
+              os.execute(haproxy_reload_cmd)
+
           else
               --- TODO: Sometimes this is triggered when requests for the same FQDN arrive at the same time 
               -- for the first time, but its not critical. Solvable with locking mechanism.
@@ -95,7 +103,8 @@ end
 
 function get_cert_from_local_ca(domain)
     core.log(core.info, "Generate Cert trough local CA for domain: " .. domain)
-    os.execute('/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh ' .. domain)
+    --- os.execute('/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh ' .. domain)
+    os.execute(cert_generate_cmd .. domain)
 end
 
 function cert_otf(txn)
@@ -103,14 +112,14 @@ function cert_otf(txn)
 
     local sni_value = txn.sf:req_ssl_sni()
 
-    local cert_file = "/etc/haproxy/certs/" .. sni_value .. ".pem"
+    local cert_file = haproxy_certs_dir .. sni_value .. ".pem"
     --- core.log(core.info, cert_file)
 
     cert_file_existing = io.open(cert_file, "r")
     if cert_file_existing == nil then
         core.log(core.info, "INFORMATIONAL: No Cert found, generating one")
 
-        --- Choose method
+        --- Which certificate generation method should be used
         if get_cert_method == 'local_ca' then
             get_cert_from_local_ca(sni_value)
         elseif get_cert_method == 'http' then
