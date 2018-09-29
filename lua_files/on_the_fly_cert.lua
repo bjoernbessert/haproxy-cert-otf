@@ -3,7 +3,6 @@
 local get_cert_method = 'local_ca'
 
 local haproxy_certs_dir = "/etc/haproxy/certs/"
-
 local haproxy_reload_cmd = '/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back'
 local cert_generate_cmd = '/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh '
 
@@ -84,7 +83,6 @@ function get_cert_via_http(domain)
 
           if move_cert then
               core.log(core.info, "Execute HAProxy reload ...")
-              --- os.execute('/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back')
               os.execute(haproxy_reload_cmd)
 
           else
@@ -100,7 +98,6 @@ end
 
 function get_cert_from_local_ca(domain)
     core.log(core.info, "Generate Cert trough local CA for domain: " .. domain)
-    --- os.execute('/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh ' .. domain)
     os.execute(cert_generate_cmd .. domain)
 end
 
@@ -108,9 +105,7 @@ function cert_otf(txn)
     core.log(core.info, "SNI detected: " .. txn.sf:req_ssl_sni())
 
     local sni_value = txn.sf:req_ssl_sni()
-
     local cert_file = haproxy_certs_dir .. sni_value .. ".pem"
-    --- core.log(core.info, cert_file)
 
     cert_file_existing = io.open(cert_file, "r")
     if cert_file_existing == nil then
