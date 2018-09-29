@@ -41,7 +41,6 @@ function create_sock()
 end
 
 function get_cert_via_http(domain)
-
     core.log(core.info, "Get Cert via HTTP ...")
 
     local tmp_workspace_dir = '/var/tmp/'
@@ -73,11 +72,11 @@ function get_cert_via_http(domain)
       end
 
       if respcode == 200 then
-
-	  local haproxy_certs_dir = "/etc/haproxy/certs/"
+	
+          local haproxy_certs_dir = "/etc/haproxy/certs/"
           local fullpath_dst = haproxy_certs_dir .. cert_filename
 
-	  core.log(core.info, "Move cert from tempdir to HAProxy cert dir ...")
+          core.log(core.info, "Move cert from tempdir to HAProxy cert dir ...")
           move_cert = os.rename(fullpath_tmp, fullpath_dst)
 
 	  if move_cert then
@@ -85,7 +84,7 @@ function get_cert_via_http(domain)
               os.execute('/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back')
           else
               --- TODO: Sometimes this is triggered when requests for the same FQDN arrive at the same time 
-	      -- for the first time, but its not critical. Solvable with locking mechanism.
+              -- for the first time, but its not critical. Solvable with locking mechanism.
               core.log(core.info, "WARNING: Move cert operation not successful!")
           end
 
@@ -95,10 +94,8 @@ function get_cert_via_http(domain)
 end
 
 function get_cert_from_local_ca(domain)
-	
     core.log(core.info, "Generate Cert trough local CA for domain: " .. domain)
     os.execute('/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh ' .. domain)
-	
 end
 
 function cert_otf(txn)
@@ -111,7 +108,6 @@ function cert_otf(txn)
 
    cert_file_existing = io.open(cert_file, "r")
    if cert_file_existing == nil then
-
        core.log(core.info, "INFORMATIONAL: No Cert found, generating one")
 
        --- Choose method
