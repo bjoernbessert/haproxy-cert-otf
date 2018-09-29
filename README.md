@@ -14,7 +14,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 - HAProxy configs and LUA script: [Link](dockerfiles/haproxy/files)
 
-- Why 2 HAProxy processes?
+- Why 2 HAProxy instances?
   - At the moment it's not possible in HAProxy to add certs at runtime (maybe this will be possible in HAProxy 1.9). Therefore a reload is needed after adding a cert
   - If you have a single HAProxy instance, you can't reload this instance itself, because an connection is already established and would be stay on the old process and will not get the newly generated cert
 
@@ -41,6 +41,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 - get_cert_via_http()
   - DNS-Resolving
   - HTTP-Redirects
+- HAProxy multiple instances example for non-docker systems (maybe trough systemd)
 
 ### Possible Improvements
 
@@ -55,7 +56,9 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 - Two separate containers for the HAProxys (then maybe mount a volume with the certs into both containers)
 
 - Implement locking mechanism (preventing the generation of certificates for same FQDN at the same time)
-
+  - HAProxy 1.8: Use stick-tables + get/set via Lua (connect with tcp socket to local tcp HAProxy socket to execute commands)
+  - HAProxy 1.9: Use stick-tables + get/set directly from Lua
+  
 - Implement haproxy reload? (through supervisor?) - maybe faster than restart
      - maybe try supervisor + "-W" from haproxy
 
