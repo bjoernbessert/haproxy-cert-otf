@@ -3,13 +3,11 @@ setup() {
     #TODO: print output in bats output
     docker-compose up -d
 }
-
 teardown() {
     #docker-compose kill
     #docker-compose rm -f
     echo ""
 }
-
 @test "check cert generation" {
     run docker-compose exec haproxy bash -c 'echo "127.0.0.1 sub1.example.local" >> /etc/hosts'
     # TODO: curl with timeout
