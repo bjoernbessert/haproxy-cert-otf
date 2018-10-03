@@ -11,37 +11,6 @@ local io = require("io")
 local ltn12 = require("ltn12")
 
 
---- Monkey Patches around bugs in haproxy's Socket class
--- This function calls core.tcp(), fixes a few methods and
--- returns the resulting socket.
--- @return Socket
-function create_sock()
-        local sock = core.tcp()
-
-        -- https://www.mail-archive.com/haproxy@formilux.org/msg28574.html
-        sock.old_receive = sock.receive
-        sock.receive = function(socket, pattern, prefix)
-                local a, b
-                if pattern == nil then pattern = "*l" end
-                if prefix == nil then
-                        a, b = sock:old_receive(pattern)
-                else
-                        a, b = sock:old_receive(pattern, prefix)
-                end
-                return a, b
-        end
-
-        -- https://www.mail-archive.com/haproxy@formilux.org/msg28604.html
-        sock.old_settimeout = sock.settimeout
-        sock.settimeout = function(socket, timeout)
-                socket:old_settimeout(timeout)
-
-                return 1
-        end
-
-        return sock
-end
-
 function get_cert_via_http(domain)
     core.log(core.info, "Get Cert via HTTP ...")
 
@@ -50,24 +19,27 @@ function get_cert_via_http(domain)
     local fullpath_tmp = tmp_workspace_dir .. cert_filename
     local fh = io.open(fullpath_tmp, "wb")
 
-    local addr = '172.17.0.1'
-    --- local addr = 'internal-ca.example.local'
-    local path = '/ca-api/v1/getcert/sub1.example.local'
+    --- local host = 'internal-ca.example.local'
+    local host = '172.17.0.1'
+    local port = 8081
     --- local path = '/ca-api/v1/getcert/' .. domain
+    local path = '/ca-api/v1/getcert/sub1.example.local'
+    local addr = host .. ":" .. port
 
+    http.TIMEOUT = 8
     local result, respcode, respheaders = http.request {
                 --- Request certificate from API and get back PEM-File (Content-Type: text/plain)
                 url = "http://" .. addr .. path,
 		sink = ltn12.sink.file(fh),
-                create = create_sock,
+                create = core.tcp,
                 -- Disable redirects, because DNS does not work here.
                 redirect = false
     }
 
     core.log(core.info, "HTTP-Response Status: " .. respcode)
-    
+ 
     if result == nil then
-        core.log(core.info, "CRITICAL: Failure in http.request call")
+        core.log(core.info, "CRITICAL: Failure or timeout in http.request call")
     else
 
       if respcode ~= 200 then
