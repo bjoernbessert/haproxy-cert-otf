@@ -1,4 +1,3 @@
-
 --- Supported values: local_ca, http
 local get_cert_method = 'local_ca'
 
@@ -9,7 +8,6 @@ local cert_generate_cmd = '/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh 
 local http = require("socket.http")
 local io = require("io")
 local ltn12 = require("ltn12")
-
 
 function get_cert_via_http(domain)
     core.log(core.info, "Get Cert via HTTP ...")
