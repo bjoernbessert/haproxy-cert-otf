@@ -27,16 +27,16 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 - Install docker and docker-compose
 
-- Build all container-images from dockerfiles/ (make build)
+- Build all container-images from dockerfiles/ (```make build```)
 
 - Choose your certificate generation method: [Link](lua_files/on_the_fly_cert.lua) 
     - "get_cert_method"
       - local_ca: Import the Root CA (ca.crt) [Link](dockerfiles/haproxy/files/generate-cert) into your client/browser or replace the ca-files with your own (and rebuild haproxy container)
       - http: Set an URL in get_cert_via_http() [Link](lua_files/on_the_fly_cert.lua)  where you can get the certs in *.pem-format
 
-- docker-compose up -d
+- ```docker-compose up -d```
 
-- docker-compose logs -f haproxy
+- ```docker-compose logs -f haproxy```
 
 - Direct your domain(s) to 127.0.0.1
 
@@ -71,6 +71,17 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
   - maybe try supervisor + "-W" from haproxy
 
 - Docker-specific: Two separate containers for the HAProxys (then maybe mount a volume with the certs into both containers)
+
+### Testing
+
+- Install **bats**:
+  - https://github.com/bats-core/bats-core#installing-bats-from-source
+  - https://github.com/bats-core/bats-core/releases
+
+- Choose certificate generation method in lua file
+
+- ```make test```
+
 
 ### Acknowledgments
 
