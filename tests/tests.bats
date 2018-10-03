@@ -16,4 +16,3 @@ teardown() {
     # TODO: use "run" + native output function
     docker-compose exec haproxy curl -I -s "https://sub1.example.local" | grep 'HTTP/1.1 200 OK'
 }
-
