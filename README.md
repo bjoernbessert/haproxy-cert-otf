@@ -51,6 +51,14 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Possible Improvements
 
+- Implement locking mechanism (preventing the generation of certificates for same FQDN at the same time)
+  - HAProxy 1.8:
+    - Use HAProxy stick-tables + get/set via Lua (connect with tcp socket to local tcp HAProxy socket to execute commands)
+    - Use HAProxy maps + get/set via Lua
+  - HAProxy 1.9: Use HAProxy stick-tables + get/set directly from Lua
+
+- Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups.
+
 - Do not start HAProxy as root (execute supervisortcl via sudo as haproxy user)
 
 - Docker-specific: Mount (host-)volume for certs. If container is destroyed, certs doesnt have to generated again
@@ -58,14 +66,6 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 - Auth-header (token or something) for HTTP-method
 
 - Implement Lets Encrypt for public domains
-
-- Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups.
-
-- Implement locking mechanism (preventing the generation of certificates for same FQDN at the same time)
-  - HAProxy 1.8:
-    - Use HAProxy stick-tables + get/set via Lua (connect with tcp socket to local tcp HAProxy socket to execute commands)
-    - Use HAProxy maps + get/set via Lua
-  - HAProxy 1.9: Use HAProxy stick-tables + get/set directly from Lua
   
 - Implement haproxy reload? (through supervisor?) - maybe faster than restart
   - maybe try supervisor + "-W" from haproxy
