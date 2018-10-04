@@ -13,4 +13,3 @@ services:
   apache:
     hostname: apache
     image: bjoernbessert/apache-cert-otf
-
