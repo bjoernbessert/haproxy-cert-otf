@@ -77,7 +77,6 @@ function get_cert_from_local_ca(domain)
     end
 end
 
-
 function set_lock()
     core.log(core.info, "Setting lock")
     --- TODO: To be implemented
