@@ -17,6 +17,7 @@ teardown() {
     # TODO: curl with timeout
     # TODO: use "run" + native output function
     docker-compose exec haproxy curl -I -s "https://sub1.example.local" | grep 'HTTP/1.1 200 OK'
+    docker-compose logs haproxy | tail -n 1 | grep ' : Removing lock'
 }
 
 @test "check cert generation subsequent request" {
@@ -27,3 +28,4 @@ teardown() {
     docker-compose logs haproxy | tail -n 1 | grep 'OK: Cert already there'
 }
 
+#TODO: Tests for remove lock when errors are raised

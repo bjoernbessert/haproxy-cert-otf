@@ -38,10 +38,12 @@ function get_cert_via_http(domain)
  
     if result == nil then
         core.log(core.info, "CRITICAL: Failure or timeout in http.request call")
+        error("Exited with error")
     else
 
       if respcode ~= 200 then
           core.log(core.info, "CRITICAL: Not expected HTTP Statuscode: " .. respcode)
+          error("Exited with error")
       end
 
       if respcode == 200 then
@@ -59,6 +61,7 @@ function get_cert_via_http(domain)
               --- TODO: Sometimes this is triggered when requests for the same FQDN arrive at the same time 
               -- for the first time, but its not critical. Solvable with locking mechanism.
               core.log(core.info, "WARNING: Move cert operation not successful!")
+              error("Exited with error")
           end
 
       end
@@ -68,7 +71,25 @@ end
 
 function get_cert_from_local_ca(domain)
     core.log(core.info, "Generate Cert trough local CA for domain: " .. domain)
-    os.execute(cert_generate_cmd .. domain)
+    local success, term_type, rc_code = os.execute(cert_generate_cmd .. domain)
+    if rc_code ~= 0 then
+        error("Error while generating Cert trough local CA!: " .. tostring(success) .. " " .. tostring(term_type) .. " " .. tostring(rc_code))
+    end
+end
+
+
+function set_lock()
+    core.log(core.info, "Setting lock")
+    --- TODO: To be implemented
+end
+
+function remove_lock()
+    core.log(core.info, "Removing lock")
+    --- TODO: To be implemented
+end
+
+function errorhandler(err)
+    print( "ERROR:", err )
 end
 
 function cert_otf(txn)
@@ -81,11 +102,14 @@ function cert_otf(txn)
     if cert_file_existing == nil then
         core.log(core.info, "INFORMATIONAL: No Cert found, generating one")
 
-        --- Which certificate generation method should be used
         if get_cert_method == 'local_ca' then
-            get_cert_from_local_ca(sni_value)
+            set_lock()
+            xpcall(get_cert_from_local_ca, errorhandler, sni_value)
+            remove_lock()
         elseif get_cert_method == 'http' then
-            get_cert_via_http(sni_value)
+            set_lock()
+            xpcall(get_cert_via_http, errorhandler, sni_value)
+            remove_lock()
         else
             core.log(core.info, "CRITICAL: No supported cert generation method found. Not generating any cert!")
         end
