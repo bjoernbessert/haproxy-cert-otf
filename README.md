@@ -46,7 +46,6 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 - get_cert_via_http()
   - DNS-Resolving
-  - HTTP-Redirects
 - HAProxy multiple instances example for non-docker systems (maybe trough systemd)
 
 ### Possible Improvements
