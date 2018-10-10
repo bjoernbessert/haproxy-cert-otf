@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -yq supervisor
 RUN mkdir -p /var/log/supervisor
 COPY files/supervisord.conf /etc/supervisor/supervisord.conf
 
-RUN apt-get update && apt-get install -yq socat iputils-ping curl wget less vim psmisc net-tools
+RUN apt-get update && apt-get install -yq netcat socat iputils-ping curl wget less vim psmisc net-tools
 
 COPY files/generate-cert /opt/generate-cert
 
