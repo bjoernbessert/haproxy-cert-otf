@@ -9,6 +9,7 @@ teardown() {
     #docker-compose kill
     #docker-compose rm -f
     echo ""
+    #TODO: remove entry from /etc/hosts
 }
 
 @test "check cert generation clean" {
@@ -28,4 +29,11 @@ teardown() {
     docker-compose logs haproxy | tail -n 1 | grep 'OK: Cert already there'
 }
 
-#TODO: Tests for remove lock when errors are raised
+@test "check if HAProxy map is created" {
+    # TODO: use "run" + native output function
+    docker-compose exec haproxy bash -c 'echo "show map /tmp/geo.map" | nc 127.0.0.1 9999 | grep "lock_cert no"'
+}
+
+# TODO: Testcase: If lock is set
+# echo "set map /tmp/geo.map lock_cert yes" | nc 127.0.0.1 9999
+
