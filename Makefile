@@ -1,5 +1,5 @@
 .PHONY: test
 
 test:
-	bats tests/tests.bats
+	bats tests/
 
