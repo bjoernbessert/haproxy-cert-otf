@@ -82,6 +82,8 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 - ```make test```
 
+- Run specific test
+  - ```bats tests/$FILE.bats```
 
 ### Acknowledgments
 
