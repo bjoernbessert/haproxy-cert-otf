@@ -10,6 +10,11 @@ services:
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
+    environment:
+      - GET_CERT_METHOD=${GET_CERT_METHOD:-local_ca}
+      #- GET_CERT_METHOD=local_ca
+      #- GET_CERT_METHOD=http
   apache:
     hostname: apache
     image: bjoernbessert/apache-cert-otf
+
