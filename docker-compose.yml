@@ -7,9 +7,30 @@ services:
       - ./lua_files:/etc/haproxy/lua_files
     depends_on:
       - apache
+      - ca-api
     ports:
       - "80:80/tcp"
       - "443:443/tcp"
+    environment:
+      - GET_CERT_METHOD=${GET_CERT_METHOD:-local_ca}
+      #- GET_CERT_METHOD=local_ca
+      #- GET_CERT_METHOD=http
+    extra_hosts:
+      - "internal-ca.example.local:172.17.0.1"
   apache:
     hostname: apache
     image: bjoernbessert/apache-cert-otf
+  ca-api:
+    hostname: ca-api
+    image: tiangolo/uwsgi-nginx-flask:python3.7
+    volumes:
+      - ./ca-api-example/app:/app
+    ports:
+      - "8081:80"
+      - "8443:443"
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_DEBUG=1
+    command: flask run --host=0.0.0.0 --port=80
+    
+
