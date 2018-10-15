@@ -1,7 +1,7 @@
 # TODO: setup(): print output in bats output
 # TODO: curl with timeout
 # TODO: use "run" + native output function
-
+# TODO: Check if docker-compose stack is already started
 
 # TODO: Test the case when a lock is already present
   # echo "set map /tmp/geo.map lock_cert yes" | nc 127.0.0.1 9999

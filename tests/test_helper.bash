@@ -12,9 +12,8 @@ function start_docker_stack()
 function clean_docker()
 {
   if [ "$BATS_TEST_NUMBER" -eq ${#BATS_TEST_NAMES[@]} ]; then
-    #docker-compose kill
-    #docker-compose rm -f
-echo ""
+    docker-compose kill
+    docker-compose rm -f
   fi
 }
 
