@@ -45,17 +45,14 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### TODO
 
-- get_cert_via_http()
-  - DNS-Resolving
 - HAProxy multiple instances example for non-docker systems (maybe trough systemd)
 
 ### Possible Improvements
 
-- Implement locking mechanism (preventing the generation of certificates for same FQDN at the same time)
+- Locking mechanism
   - HAProxy 1.8:
-    - Use HAProxy stick-tables + get/set via Lua (connect with tcp socket to local tcp HAProxy socket to execute commands)
-    - Use HAProxy maps + get/set via Lua
-  - HAProxy 1.9: Use HAProxy stick-tables + get/set directly from Lua (currently, only read operations possible)
+    - Currently used: HAProxy maps + get/set via Lua
+    - Future: Use HAProxy stick-tables + get/set via Lua (maybe possible with HAProxy 1.9), or connect with tcp socket to local tcp HAProxy socket to execute commands)
 
 - Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups.
 
