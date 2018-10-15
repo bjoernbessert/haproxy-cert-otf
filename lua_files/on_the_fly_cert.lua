@@ -1,5 +1,12 @@
---- Supported values: local_ca, http
-local get_cert_method = 'local_ca'
+local get_cert_method = os.getenv("GET_CERT_METHOD")
+core.log(core.info, "'GET_CERT_METHOD' env var value is: " .. tostring(get_cert_method))
+
+if (get_cert_method == nil) or not (get_cert_method == 'local_ca' or get_cert_method == 'http') then
+    core.log(core.info, "Setting 'local_ca' as default/fallback")
+    get_cert_method = 'local_ca'
+end
+core.log(core.info, "Use cert generation method: " .. get_cert_method)
+
 
 local haproxy_certs_dir = "/etc/haproxy/certs/"
 local haproxy_reload_cmd = '/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back'
@@ -12,20 +19,23 @@ local ltn12 = require("ltn12")
 local socket = require('socket')
 
 
+--- Create Map file when HAProxy loads the lua-file at startup
+---TODO: Map.new fails in first attempt, second call then is everytime successfully. Bug in HAProxy Lua Map class?
 function create_map ()
     geo = Map.new("/tmp/geo.map", Map._str)
 end
 
---- Create Map file when HAProxy loads the lua-file at startup
----TODO: Map.new fails in first attempt, second call then is everytime successfully. Bug in HAProxy Lua Map class?
 if pcall(create_map) then
     core.log(core.info, "create_map: Success")
 else
     core.log(core.info, "create_map: Failure")
     create_map()
-    core.set_map("/tmp/geo.map", 'lock_cert', 'no')
     core.log(core.info, "create_map: After 2nd try")
+    core.set_map("/tmp/geo.map", 'lock_cert', 'no')
 end
+
+core.log(core.info, "Things at startup done.")
+
 
 function dns_query()
 
@@ -38,6 +48,7 @@ function dns_query()
         --- POSIX Systemcall to gethostbyaddr
         --- Timeout values for socket.dns.toip: Cannot be changed because there isn't a timeout for a syscall. 
         --- The timeout which is in effect here are the system settings (from /etc/resolv.conf)
+        core.log(core.info, "Doing DNS Request ...")        
         local ip_tbl = socket.dns.toip(addr)
         --- local ip_tbl = socket.dns.toip('www.google.de')
         --- print (ip_tbl)
@@ -56,6 +67,9 @@ function get_cert_via_http(domain)
 
     --- local host = 'internal-ca.example.local'
     local host = '172.17.0.1'
+
+    --- dns_query()
+
     local port = 8081
     --- local path = '/ca-api/v1/getcert/' .. domain
     local path = '/ca-api/v1/getcert/sub1.example.local'
@@ -84,7 +98,7 @@ function get_cert_via_http(domain)
       end
 
       if respcode == 200 then
-	
+
           local fullpath_dst = haproxy_certs_dir .. cert_filename
 
           core.log(core.info, "Move cert from tempdir to HAProxy cert dir ...")
@@ -150,20 +164,20 @@ function set_lock()
     --- TODO: execute only if check_lock() was successful
     core.set_map("/tmp/geo.map", 'lock_cert', 'yes')
 
-    local abc = Map.lookup(geo, 'lock_cert')
-    core.log(core.info, "Lock status after setting lock: " .. tostring(abc))
+    local lockstatus = Map.lookup(geo, 'lock_cert')
+    core.log(core.info, "Lock status after setting lock: " .. tostring(lockstatus))
 end
 
 function remove_lock()
     core.log(core.info, "Removing lock: Start")
 
-    local abc = Map.lookup(geo, 'lock_cert')
-    core.log(core.info, "Lock status before removal task: " .. tostring(abc))
+    local lockstatus = Map.lookup(geo, 'lock_cert')
+    core.log(core.info, "Lock status before removal task: " .. tostring(lockstatus))
 
     core.set_map("/tmp/geo.map", 'lock_cert', 'no')
 
-    local abc = Map.lookup(geo, 'lock_cert')
-    core.log(core.info, "Lock status after removal task: " .. tostring(abc))
+    local lockstatus = Map.lookup(geo, 'lock_cert')
+    core.log(core.info, "Lock status after removal task: " .. tostring(lockstatus))
 
     core.log(core.info, "Removing lock: End")
 end
@@ -175,9 +189,8 @@ end
 function cert_otf(txn)
     core.log(core.info, "SNI detected: " .. txn.sf:req_ssl_sni())
 
-
-    local abc = Map.lookup(geo, 'lock_cert')
-    core.log(core.info, "Lock status: " .. tostring(abc))
+    local lockstatus = Map.lookup(geo, 'lock_cert')
+    core.log(core.info, "Lock status: " .. tostring(lockstatus))
 
     --- dns_query()
     --- set_lock()
@@ -196,7 +209,7 @@ function cert_otf(txn)
             remove_lock()
         elseif get_cert_method == 'http' then
             set_lock()
-            --TODO: execute the following 2 lines only if set_lock() was successful
+            ---TODO: execute the following 2 lines only if set_lock() was successful
             xpcall(get_cert_via_http, errorhandler, sni_value)
             remove_lock()
         else
