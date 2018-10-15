@@ -37,24 +37,14 @@ end
 core.log(core.info, "Things at startup done.")
 
 
-function dns_query()
-
-    local use_dns = true
-    --- local addr = '172.217.18.163'
-    local addr = 'www.google.de'
-
-    if use_dns then
-        --- local ip_tbl = socket.dns.toip('172.217.18.163')
-        --- POSIX Systemcall to gethostbyaddr
-        --- Timeout values for socket.dns.toip: Cannot be changed because there isn't a timeout for a syscall. 
-        --- The timeout which is in effect here are the system settings (from /etc/resolv.conf)
-        core.log(core.info, "Doing DNS Request ...")        
-        local ip_tbl = socket.dns.toip(addr)
-        --- local ip_tbl = socket.dns.toip('www.google.de')
-        --- print (ip_tbl)
-        core.log(core.info, "ip_tbl: " .. tostring(ip_tbl))
-    end
-
+function dns_query(name_to_resolve) 
+    --- POSIX Systemcall to gethostbyaddr
+    --- Timeout values for socket.dns.toip: Cannot be changed because there isn't a timeout for a syscall in luasocket
+    --- The timeout value which is in effect here is those from the system settings (from /etc/resolv.conf)
+    core.log(core.info, "Doing DNS Request for " .. tostring(name_to_resolve) .. "...")        
+    local ip_tbl = socket.dns.toip(name_to_resolve)
+    core.log(core.info, "ip_tbl: " .. tostring(ip_tbl))
+    return ip_tbl
 end
 
 function get_cert_via_http(domain)
@@ -65,10 +55,12 @@ function get_cert_via_http(domain)
     local fullpath_tmp = tmp_workspace_dir .. cert_filename
     local fh = io.open(fullpath_tmp, "wb")
 
-    --- local host = 'internal-ca.example.local'
-    local host = '172.17.0.1'
-
-    --- dns_query()
+    local use_dns = true
+    if use_dns then
+        host = dns_query('internal-ca.example.local')
+    else
+        host = '172.17.0.1'
+    end
 
     local port = 8081
     --- local path = '/ca-api/v1/getcert/' .. domain
@@ -123,8 +115,6 @@ end
 function get_cert_from_local_ca(domain)
     core.log(core.info, "Generate Cert trough local CA for domain: " .. domain)
 
-    --- dns_query()
-
     local success, term_type, rc_code = os.execute(cert_generate_cmd .. domain)
     if rc_code ~= 0 then
         error("Error while generating Cert trough local CA!: " .. tostring(success) .. " " .. tostring(term_type) .. " " .. tostring(rc_code))
@@ -144,7 +134,7 @@ function check_lock()
         if lockstatus == 'yes' then
             core.log(core.info, "lock is set, wait ... (" .. n .. ")" )
             n = n + 1
-            --- Use sleep function from luasocket
+            --- Using sleep function from luasocket
             socket.sleep(0.5)
         else
             core.log(core.info, "No lock is set, breaking the wait-loop ...")
@@ -161,8 +151,9 @@ function set_lock()
     local status = check_lock()
     core.log(core.info, "check_lock() status: " .. tostring(status))
 
-    --- TODO: execute only if check_lock() was successful
-    core.set_map("/tmp/geo.map", 'lock_cert', 'yes')
+    if status then
+      core.set_map("/tmp/geo.map", 'lock_cert', 'yes')
+    end
 
     local lockstatus = Map.lookup(geo, 'lock_cert')
     core.log(core.info, "Lock status after setting lock: " .. tostring(lockstatus))
@@ -191,9 +182,6 @@ function cert_otf(txn)
 
     local lockstatus = Map.lookup(geo, 'lock_cert')
     core.log(core.info, "Lock status: " .. tostring(lockstatus))
-
-    --- dns_query()
-    --- set_lock()
 
     local sni_value = txn.sf:req_ssl_sni()
     local cert_file = haproxy_certs_dir .. sni_value .. ".pem"
