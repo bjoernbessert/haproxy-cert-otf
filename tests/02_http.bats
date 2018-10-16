@@ -4,6 +4,9 @@ load test_helper
 
 setup() {
   start_docker_stack http
+  if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
+    echo "# --- TEST NAME IS $(basename ${BATS_TEST_FILENAME})" >&3
+  fi
 }
 
 teardown() {

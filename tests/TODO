@@ -3,12 +3,14 @@
 # TODO: maybe use bats "run" wrapper (but has its own problems with pipes etc.)
 # TODO: maybe use native "output" variable instead of grep
 # TODO: Check if docker-compose stack is already started
+# TODO: https://stackoverflow.com/questions/48398838/bats-how-can-i-echo-the-file-name-in-a-bats-script-for-reporting
+
 
 TODO
 
 - 11_localca_withlock.bats
 
-- bei http-check sub2.example.local aufrufen
+- http + sub2.example.local
 
 
 

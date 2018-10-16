@@ -5,6 +5,8 @@ load test_helper
 setup() {
   start_docker_stack http
   if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
+    echo "# --- TEST NAME IS $(basename ${BATS_TEST_FILENAME})" >&3
+
     sleep 1
     docker-compose exec haproxy bash -c 'echo "set map /tmp/geo.map lock_cert yes" | nc 127.0.0.1 9999'
   fi
