@@ -63,14 +63,17 @@ function get_cert_via_http(domain)
     end
 
     local port = 8081
-    --- local path = '/ca-api/v1/getcert/' .. domain
-    local path = '/ca-api/v1/getcert/sub1.example.local'
+    local path = '/ca-api/v1/getcert/' .. domain
+    --- local path = '/ca-api/v1/getcert/sub1.example.local'
     local addr = host .. ":" .. port
+
+    local url = "http://" .. addr .. path
+    core.log(core.info, "Call url: " .. url)
 
     http.TIMEOUT = 8
     local result, respcode, respheaders = http.request {
                 --- Request certificate from API and get back PEM-File (Content-Type: text/plain)
-                url = "http://" .. addr .. path,
+                url = url,
 		sink = ltn12.sink.file(fh),
                 create = core.tcp,
                 -- Disable redirects, because DNS does not work here.
@@ -137,7 +140,7 @@ function check_lock()
             --- Using sleep function from luasocket
             socket.sleep(0.5)
         else
-            core.log(core.info, "No lock is set, breaking the wait-loop ...")
+            core.log(core.info, "No lock is set, not enter/breaking the wait-loop ...")
             return true;
         end
     end
