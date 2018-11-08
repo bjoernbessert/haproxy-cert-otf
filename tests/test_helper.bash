@@ -5,6 +5,8 @@ function start_docker_stack()
   if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
     export "GET_CERT_METHOD=$METHOD" 
     docker-compose up -d
+    # TODO: use polling instead of static sleep value
+    sleep 5
     docker-compose exec haproxy bash -c 'echo "127.0.0.1 sub1.example.local" >> /etc/hosts'
   fi
 }
@@ -41,6 +43,6 @@ function check_for_http_200()
 
 function check_for_curl_cert_error()
 {
-  run docker-compose exec haproxy curl -I -s "https://sub1.example.local" | grep 'SSL: no alternative certificate subject name matches target host name'
+  docker-compose exec haproxy curl -I -s "https://sub1.example.local" | grep 'SSL: no alternative certificate subject name matches target host name'
 }
 

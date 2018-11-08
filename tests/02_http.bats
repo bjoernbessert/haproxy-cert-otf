@@ -5,7 +5,7 @@ load test_helper
 setup() {
   start_docker_stack http
   if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
-    echo "# --- TEST NAME IS $(basename ${BATS_TEST_FILENAME})" >&3
+    echo "# --- Test filename is $(basename ${BATS_TEST_FILENAME})" >&3
   fi
 }
 
@@ -15,19 +15,26 @@ teardown() {
 
 @test "Check if HAProxy map is created" {
   sleep 1
-  check_map_with_entry_set_to_no
+  run check_map_with_entry_set_to_no
+  [ "$status" -eq 0 ]
 }
 
 @test "Check cert generation: Fresh state" {
   clean_cert
-  check_for_http_200
-  docker-compose logs haproxy | tail -n 1 | grep ' : Removing lock'
-  check_map_with_entry_set_to_no
+  run check_for_http_200
+  [ "$status" -eq 0 ]
+  run docker-compose logs haproxy | tail -n 1 | grep ' : Removing lock'
+  [ "$status" -eq 0 ]
+  run check_map_with_entry_set_to_no
+  [ "$status" -eq 0 ]
 }
 
 @test "Check cert generation: Subsequent request" {
-  check_for_http_200
-  docker-compose logs haproxy | tail -n 1 | grep 'OK: Cert already there'
-  check_map_with_entry_set_to_no
+  run check_for_http_200
+  [ "$status" -eq 0 ]
+  run docker-compose logs haproxy | tail -n 1 | grep 'OK: Cert already there'
+  [ "$status" -eq 0 ]
+  run check_map_with_entry_set_to_no
+  [ "$status" -eq 0 ]
 }
 
