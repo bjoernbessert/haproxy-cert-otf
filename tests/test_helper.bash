@@ -3,10 +3,23 @@ function start_docker_stack()
   local METHOD="$1"
 
   if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
-    export "GET_CERT_METHOD=$METHOD" 
+    export "GET_CERT_METHOD=$METHOD"
     docker-compose up -d
-    # TODO: Use wait-for instead of static sleep value
-    sleep 5
+
+    # Wait until haproxy container is truly ready
+    for i in {1..150}; do
+        run docker-compose exec haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"'
+        if [ "$status" -eq 0 ]; then
+            break
+        fi
+        if [ $i -eq 150 ]; then
+            echo "start_docker_stack not successful. Exiting."
+            exit 1
+        fi
+        sleep 0.2
+    done
+
+    #sleep 5
     docker-compose exec haproxy bash -c 'echo "127.0.0.1 sub1.example.local" >> /etc/hosts'
   fi
 }
