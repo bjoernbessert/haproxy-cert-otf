@@ -8,7 +8,7 @@ setup() {
     echo "# --- Test filename is $(basename ${BATS_TEST_FILENAME})" >&3
 
     sleep 1
-    docker-compose exec haproxy bash -c 'echo "set map /tmp/geo.map lock_cert yes" | nc 127.0.0.1 9999'
+    docker-compose exec haproxy bash -c 'echo "set map /tmp/lock.map lock_cert yes" | nc 127.0.0.1 9999'
   fi
 }
 
@@ -28,7 +28,10 @@ teardown() {
   [ "$status" -eq 0 ]
   run check_map_with_entry_set_to_yes
   [ "$status" -eq 0 ]
-  docker-compose logs haproxy | tail -n 1 | grep ' : Removing lock'
+  run bash -c "docker-compose logs haproxy | grep ' : Use cert generation method: ' | grep ': http'"
+  [ "$status" -eq 0 ]
+  run bash -c "docker-compose logs haproxy | tail -n 3 | head -n 1 | grep ' : Lock not free. Cannot set lock'"
+  [ "$status" -eq 0 ]
 }
 
 @test "Check cert generation: Subsequent request" {
@@ -36,7 +39,8 @@ teardown() {
   [ "$status" -eq 0 ]
   run check_map_with_entry_set_to_yes
   [ "$status" -eq 0 ]
-  run docker-compose logs haproxy | tail -n 1 | grep 'TODO: Fill out here'
+  run bash -c "docker-compose logs haproxy | grep ' : Use cert generation method: ' | grep ': http'"
+  [ "$status" -eq 0 ]
+  run bash -c "docker-compose logs haproxy | tail -n 3 | head -n 1| grep ' : Lock not free. Cannot set lock'"
   [ "$status" -eq 0 ]
 }
-
