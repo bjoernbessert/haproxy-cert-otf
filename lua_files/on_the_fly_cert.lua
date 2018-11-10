@@ -145,7 +145,6 @@ function check_if_lock_is_set()
         end
     end
 
-    -- return false;
 end
 
 function set_lock()
