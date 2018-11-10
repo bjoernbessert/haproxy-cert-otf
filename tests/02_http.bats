@@ -21,12 +21,16 @@ teardown() {
 
 @test "Check cert generation: Fresh state" {
   clean_cert
+
   run check_for_http_200
   [ "$status" -eq 0 ]
+
   run bash -c "docker-compose logs haproxy | grep ' : Use cert generation method: ' | grep ': http'"
   [ "$status" -eq 0 ]
+
   run bash -c "docker-compose logs haproxy | tail -n 2 | head -n 1 | grep ' : Removing lock'"
   [ "$status" -eq 0 ]
+
   run check_map_with_entry_set_to_no
   [ "$status" -eq 0 ]
 }
@@ -34,10 +38,13 @@ teardown() {
 @test "Check cert generation: Subsequent request" {
   run check_for_http_200
   [ "$status" -eq 0 ]
+
   run bash -c "docker-compose logs haproxy | grep ' : Use cert generation method: ' | grep ': http'"
   [ "$status" -eq 0 ]
+
   run bash -c "docker-compose logs haproxy | tail -n 2 | head -n 1 | grep 'OK: Cert already there'"
   [ "$status" -eq 0 ]
+
   run check_map_with_entry_set_to_no
   [ "$status" -eq 0 ]
 }

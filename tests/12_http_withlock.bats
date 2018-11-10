@@ -24,12 +24,16 @@ teardown() {
 
 @test "Check cert generation: Fresh state" {
   clean_cert
+
   run check_for_curl_cert_error
   [ "$status" -eq 0 ]
+
   run check_map_with_entry_set_to_yes
   [ "$status" -eq 0 ]
+
   run bash -c "docker-compose logs haproxy | grep ' : Use cert generation method: ' | grep ': http'"
   [ "$status" -eq 0 ]
+
   run bash -c "docker-compose logs haproxy | tail -n 3 | head -n 1 | grep ' : Lock not free. Cannot set lock'"
   [ "$status" -eq 0 ]
 }
@@ -37,10 +41,13 @@ teardown() {
 @test "Check cert generation: Subsequent request" {
   run check_for_curl_cert_error
   [ "$status" -eq 0 ]
+
   run check_map_with_entry_set_to_yes
   [ "$status" -eq 0 ]
+
   run bash -c "docker-compose logs haproxy | grep ' : Use cert generation method: ' | grep ': http'"
   [ "$status" -eq 0 ]
+
   run bash -c "docker-compose logs haproxy | tail -n 3 | head -n 1| grep ' : Lock not free. Cannot set lock'"
   [ "$status" -eq 0 ]
 }
