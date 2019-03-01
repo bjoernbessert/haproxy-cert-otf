@@ -182,14 +182,6 @@ function errorhandler(err)
     print( "ERROR:", err )
 end
 
-
-
---- function use_method()
-function choose_method()
-    return false
-end
-
-
 function cert_otf(txn)
     core.log(core.info, "SNI detected: " .. txn.sf:req_ssl_sni())
 
@@ -207,7 +199,6 @@ function cert_otf(txn)
     end
 
     core.log(core.info, "INFORMATIONAL: No Cert found, generating one")
-
 
         if get_cert_method == 'localca' then
             local lock_could_be_set = set_lock()
