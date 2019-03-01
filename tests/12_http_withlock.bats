@@ -48,6 +48,6 @@ teardown() {
   run bash -c "docker-compose logs haproxy | grep ' : Use cert generation method: ' | grep ': http'"
   [ "$status" -eq 0 ]
 
-  run bash -c "docker-compose logs haproxy | tail -n 3 | head -n 1| grep ' : Lock not free. Cannot set lock'"
+  run bash -c "docker-compose logs haproxy | tail -n 3 | head -n 1 | grep ' : Lock not free. Cannot set lock'"
   [ "$status" -eq 0 ]
 }

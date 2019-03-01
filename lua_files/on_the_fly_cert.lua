@@ -182,6 +182,14 @@ function errorhandler(err)
     print( "ERROR:", err )
 end
 
+
+
+--- function use_method()
+function choose_method()
+    return false
+end
+
+
 function cert_otf(txn)
     core.log(core.info, "SNI detected: " .. txn.sf:req_ssl_sni())
 
@@ -192,8 +200,14 @@ function cert_otf(txn)
     local cert_file = haproxy_certs_dir .. sni_value .. ".pem"
 
     cert_file_existing = io.open(cert_file, "r")
-    if cert_file_existing == nil then
-        core.log(core.info, "INFORMATIONAL: No Cert found, generating one")
+
+    if cert_file_existing ~= nil then
+        core.log(core.info, "OK: Cert already there")
+	return
+    end
+
+    core.log(core.info, "INFORMATIONAL: No Cert found, generating one")
+
 
         if get_cert_method == 'localca' then
             local lock_could_be_set = set_lock()
@@ -204,6 +218,8 @@ function cert_otf(txn)
             if lock_could_be_set then
                 xpcall(get_cert_from_localca, errorhandler, sni_value)
                 remove_lock()
+	    else
+                core.log(core.info, "CRITICAL: Lock could not be set.")
             end
         elseif get_cert_method == 'http' then
             local lock_could_be_set = set_lock()
@@ -214,16 +230,12 @@ function cert_otf(txn)
             if lock_could_be_set then
                 xpcall(get_cert_via_http, errorhandler, sni_value)
                 remove_lock()
+	    else
+                core.log(core.info, "CRITICAL: Lock could not be set.")
             end
         else
             core.log(core.info, "CRITICAL: No supported cert generation method found. Not generating any cert!")
         end
-		
-    else
-        core.log(core.info, "OK: Cert already there")
-    end
-
-    core.log(core.info, "Script execution finished.")
 
 end
 
