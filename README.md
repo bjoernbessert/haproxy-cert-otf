@@ -12,7 +12,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Details
 
-- Tested with HAProxy 1.8.19
+- Tested with HAProxy 1.8.19, 1.9.6
 
 - HAProxy configs: [Link](dockerfiles/haproxy/files)
 
@@ -45,6 +45,8 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### TODO
 
+- Concurrency testing (Vegeta)
+- DOC: Using a Intermediate CA with X.509 Name Constraints
 - HAProxy multiple instances example for non-docker systems (maybe trough systemd)
 
 ### Possible Improvements
