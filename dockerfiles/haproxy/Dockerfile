@@ -18,6 +18,11 @@ RUN add-apt-repository -y ppa:vbernat/haproxy-$HAPROXY_VERSION && apt-get update
 
 RUN apt-get install -yq lua-socket openssl
 
+# silencing not critical openssl warning/error
+# Can't load /root/.rnd into RNG
+# 139879202243008:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/root/.rnd
+RUN touch /root/.rnd
+
 RUN apt-get update && apt-get install -yq supervisor
 RUN mkdir -p /var/log/supervisor
 COPY files/supervisord.conf /etc/supervisor/supervisord.conf
