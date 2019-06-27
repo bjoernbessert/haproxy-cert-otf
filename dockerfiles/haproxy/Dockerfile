@@ -2,6 +2,10 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
+#ENV HAPROXY_VERSION 1.8
+#ENV HAPROXY_VERSION 1.9
+ENV HAPROXY_VERSION 2.0
+
 RUN apt-get update && apt-get install -yq tzdata
 RUN echo Europe/Berlin >/etc/timezone && \
     ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime && \
@@ -9,10 +13,8 @@ RUN echo Europe/Berlin >/etc/timezone && \
 
 RUN apt-get update && apt-get install -yq software-properties-common
 
-#RUN add-apt-repository -y ppa:vbernat/haproxy-1.8 && apt-get update && \
-#    apt-get install -yq haproxy=1.8.\* 
-RUN add-apt-repository -y ppa:vbernat/haproxy-1.9 && apt-get update && \
-    apt-get install -yq haproxy=1.9.\* 
+RUN add-apt-repository -y ppa:vbernat/haproxy-$HAPROXY_VERSION && apt-get update && \
+    apt-get install -yq haproxy=$HAPROXY_VERSION.\* 
 
 RUN apt-get install -yq lua-socket openssl
 
