@@ -12,7 +12,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Details
 
-- Tested with HAProxy 1.8, 1.9
+- Tested with HAProxy 1.8.20, 1.9.8
 
 - HAProxy configs: [Link](dockerfiles/haproxy/files)
 
