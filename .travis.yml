@@ -1,11 +1,9 @@
-language: minimal
-
-sudo: 'required'
+#language: minimal
+language: bash
 
 services:
   - docker
 
-#dist: xenial
 dist: bionic
 
 before_install:
