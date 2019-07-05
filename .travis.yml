@@ -5,7 +5,8 @@ sudo: 'required'
 services:
   - docker
 
-dist: xenial
+#dist: xenial
+dist: bionic
 
 before_install:
   - sudo apt-get update && sudo apt-get -y install bats
@@ -14,9 +15,12 @@ install:
   - cd dockerfiles/apache && make build-without-cache && cd ../../
   - cd dockerfiles/haproxy && make build-without-cache && cd ../../
 
+#before_script:
+#  - 
+
 script:
   - make test
 
 after_script:
-  - make test
+  - make clean
 
