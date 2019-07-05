@@ -12,7 +12,7 @@ before_install:
 
 install:
   - cd dockerfiles/apache && make build-without-cache && cd ../../
-  - cd dockerfiles/apache && make build-without-cache && cd ../../
+  - cd dockerfiles/haproxy && make build-without-cache && cd ../../
 
 script:
   - make test
