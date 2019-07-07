@@ -1,5 +1,5 @@
-- [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=master)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf)
-- [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=travis_ubuntu_haproxy_latest)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf)
+- master:  [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=master)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf)
+- travis_ubuntu_haproxy_latest: [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=travis_ubuntu_haproxy_latest)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf)
 
 # haproxy-cert-otf
 
