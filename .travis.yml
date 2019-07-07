@@ -1,10 +1,15 @@
 #language: minimal
 language: bash
 
+dist: bionic
+
 services:
   - docker
 
-dist: bionic
+env:
+  - HAPROXY_MAIN_VERSION=2.0
+  - HAPROXY_MAIN_VERSION=1.9
+  - HAPROXY_MAIN_VERSION=1.8
 
 before_install:
   - sudo apt-get update && sudo apt-get -y install bats

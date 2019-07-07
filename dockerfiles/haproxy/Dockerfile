@@ -1,10 +1,8 @@
 FROM ubuntu:18.04
 
-ENV DEBIAN_FRONTEND noninteractive
+ARG HAPROXY_MAIN_VERSION
 
-#ENV HAPROXY_MAIN_VERSION 1.8
-#ENV HAPROXY_MAIN_VERSION 1.9
-ENV HAPROXY_MAIN_VERSION 2.0
+ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -yq tzdata
 RUN echo Europe/Berlin >/etc/timezone && \
@@ -18,7 +16,7 @@ RUN add-apt-repository -y ppa:vbernat/haproxy-$HAPROXY_MAIN_VERSION && apt-get u
 
 RUN apt-get install -yq lua-socket openssl
 
-# silencing not critical openssl warning/error
+# silencing a not critical openssl warning/error
 # Can't load /root/.rnd into RNG
 # 139879202243008:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/root/.rnd
 RUN touch /root/.rnd
@@ -44,3 +42,4 @@ COPY files/generate-cert/ca.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+

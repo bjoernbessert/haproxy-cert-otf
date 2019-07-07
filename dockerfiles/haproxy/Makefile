@@ -1,10 +1,16 @@
 include env_make
 
-.PHONY: build build-without-cache
+# Set "export HAPROXY_MAIN_VERSION=X.X", otherwise make will use a default value
+ifndef HAPROXY_MAIN_VERSION
+override HAPROXY_MAIN_VERSION = 2.0
+endif
 
 build:
-	docker build -t $(NS)/$(REPO):$(VERSION) .
+	docker build --build-arg HAPROXY_MAIN_VERSION="${HAPROXY_MAIN_VERSION}" -t $(NS)/$(REPO):$(VERSION) .
 
 build-without-cache:
-	docker build -t $(NS)/$(REPO):$(VERSION) --rm=true --force-rm --no-cache .
+	docker build --build-arg HAPROXY_MAIN_VERSION="${HAPROXY_MAIN_VERSION}" -t $(NS)/$(REPO):$(VERSION) --rm=true --force-rm --no-cache .
+
+
+.PHONY: build build-without-cache
 
