@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=master)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf)
+
 # haproxy-cert-otf
 
 Create SSL certificates on the fly with HAProxy. With the help of Lua the certificate is generated dynamically on the first request.
