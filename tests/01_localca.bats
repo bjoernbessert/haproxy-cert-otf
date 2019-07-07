@@ -23,7 +23,7 @@ teardown() {
   clean_cert
 
   run check_for_http_200
-  [ "$status" -eq 1 ]
+  [ "$status" -eq 0 ]
 
   run bash -c "docker-compose logs haproxy | grep ' : Use cert generation method: ' | grep ': localca'"
   [ "$status" -eq 0 ]
