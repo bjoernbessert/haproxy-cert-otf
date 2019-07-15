@@ -12,8 +12,10 @@ RUN echo Europe/Berlin >/etc/timezone && \
 
 RUN apt-get update && apt-get install -yq software-properties-common
 
+#START MARKER1
 RUN add-apt-repository -y ppa:vbernat/haproxy-$HAPROXY_MAIN_VERSION && apt-get update && \
     apt-get install -yq haproxy=$HAPROXY_MAIN_VERSION.\* 
+#END MARKER1
 
 RUN apt-get install -yq lua-socket openssl
 
