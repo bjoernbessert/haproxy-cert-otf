@@ -44,5 +44,9 @@ COPY files/haproxy_back.cfg  /etc/haproxy/haproxy_back.cfg
 COPY files/generate-cert/ca.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
+# Info
+RUN haproxy -vv
+
+
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
