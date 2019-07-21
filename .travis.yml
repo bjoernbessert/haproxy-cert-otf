@@ -1,4 +1,3 @@
-#language: minimal
 language: bash
 
 dist: bionic
@@ -16,8 +15,12 @@ before_install:
   - travis_retry sudo apt-get -y install bats
 
 install:
-  - cd dockerfiles/apache && make build-without-cache && cd ../../
-  - cd dockerfiles/haproxy && make build-without-cache && cd ../../
+  - cd dockerfiles/apache
+  - travis_retry make build-without-cache
+  - cd "$TRAVIS_BUILD_DIR"
+  - cd dockerfiles/haproxy
+  - travis_retry make build-without-cache
+  - cd "$TRAVIS_BUILD_DIR"
 
 script:
   - make test
