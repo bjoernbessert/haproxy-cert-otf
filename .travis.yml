@@ -11,6 +11,7 @@ env:
   - UBUNTU_DOCKER_IMAGE=ubuntu:18.04 HAPROXY_MAIN_VERSION=1.8
 
 before_install:
+  - sudo rm -f /etc/apt/sources.list.d/pgdg.list
   - travis_retry sudo apt-get update
   - travis_retry sudo apt-get -y install bats
 
