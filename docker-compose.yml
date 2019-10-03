@@ -13,6 +13,7 @@ services:
       - "443:443/tcp"
     environment:
       - GET_CERT_METHOD=${GET_CERT_METHOD:-localca}
+      - HOST_INTERNAL_CA=internal-ca.example.local
       #- GET_CERT_METHOD=localca
       #- GET_CERT_METHOD=http
     extra_hosts:
