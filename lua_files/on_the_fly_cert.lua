@@ -1,5 +1,7 @@
 local get_cert_method = os.getenv("GET_CERT_METHOD")
 core.log(core.info, "'GET_CERT_METHOD' env var value is: " .. tostring(get_cert_method))
+local host_internal_ca = os.getenv("HOST_INTERNAL_CA")
+core.log(core.info, "'HOST_INTERNAL_CA' env var value is: " .. tostring(host_internal_ca))
 
 if (get_cert_method == nil) or not (get_cert_method == 'localca' or get_cert_method == 'http') then
     core.log(core.info, "Setting 'localca' as default/fallback")
@@ -54,18 +56,11 @@ function get_cert_via_http(domain)
     local cert_filename = domain .. ".pem"
     local fullpath_tmp = tmp_workspace_dir .. cert_filename
     local fh = io.open(fullpath_tmp, "wb")
-
-    local use_dns = true
-    if use_dns then
-        host = dns_query('internal-ca.example.local')
-    else
-        host = '172.17.0.1'
-    end
-
+    local host_ip = dns_query(host_internal_ca)
     local port = 8081
     local path = '/ca-api/v1/getcert/' .. domain
     --- local path = '/ca-api/v1/getcert/sub1.example.local'
-    local addr = host .. ":" .. port
+    local addr = host_ip .. ":" .. port
 
     local url = "http://" .. addr .. path
     core.log(core.info, "Call url: " .. url)
