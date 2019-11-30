@@ -4,7 +4,7 @@ function start_docker_stack()
 
   if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
     export "GET_CERT_METHOD=$METHOD"
-    docker-compose up -d
+    timeout 120 docker-compose up -d
 
     # Wait until haproxy container is truly ready
     for i in {1..150}; do
