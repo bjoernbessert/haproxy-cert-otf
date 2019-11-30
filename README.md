@@ -85,8 +85,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 ### Testing
 
 - Install **bats**:
-  - https://github.com/bats-core/bats-core#installing-bats-from-source
-  - https://github.com/bats-core/bats-core/releases
+  - ```sudo apt-get update && sudo apt-get -y install bats```
 
 - ```make test```
 
