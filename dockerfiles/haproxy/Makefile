@@ -2,7 +2,7 @@ include env_make
 
 # Set "export HAPROXY_MAIN_VERSION=X.X", otherwise make will use a default value
 ifndef HAPROXY_MAIN_VERSION
-override HAPROXY_MAIN_VERSION = 2.0
+override HAPROXY_MAIN_VERSION = 2.1
 endif
 
 # Set "export UBUNTU_DOCKER_IMAGE=ubuntu:x", otherwise make will use a default value
