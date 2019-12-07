@@ -63,7 +63,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
     - Future: Use HAProxy stick-tables + get/set via Lua (maybe possible with HAProxy 1.9 ('get' is possible with 1.9: https://www.arpalert.org/src/haproxy-lua-api/1.9dev/index.html#sticktable-class), or connect with tcp socket to local tcp HAProxy socket to execute commands)
    - HAProxy 2.x?: Maybe locking not needed anymore if native method is available for creating new/not existing certs
 
-- Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups.
+- Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups (maybe not an improvement at all because of already existing filesystem cache)
 
 - HAProxy 2.1: Update EXISTING certificates at runtime is now possible (no reload needed), but not the creation of non-existing certs
 
