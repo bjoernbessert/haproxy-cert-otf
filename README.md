@@ -26,7 +26,6 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 - Why 2 HAProxy instances?
   - At the moment it's not possible in HAProxy to add certs at runtime. Therefore a reload is needed after adding a cert
-    - TODO: Now possible in HAProxy 2.1. Needs to be tested.
   - If you have a single HAProxy instance, you can't reload this instance itself, because an connection is already established and would be stay on the old process and will not get the newly generated cert
 
 
@@ -62,11 +61,11 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
   - HAProxy 1.8:
     - Currently used: HAProxy maps + get/set via Lua
     - Future: Use HAProxy stick-tables + get/set via Lua (maybe possible with HAProxy 1.9 ('get' is possible with 1.9: https://www.arpalert.org/src/haproxy-lua-api/1.9dev/index.html#sticktable-class), or connect with tcp socket to local tcp HAProxy socket to execute commands)
-   - HAProxy 2.1?: If no reload is needed for updating certificates, use a lock per SNI instead a "global" lock
+   - HAProxy 2.x?: Maybe locking not needed anymore if native method is available for creating new/not existing certs
 
 - Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups.
 
-- HAProxy 2.1: Update certificates at runtime (no reload needed)
+- HAProxy 2.1: Update EXISTING certificates at runtime is now possible (no reload needed), but not the creation of non-existing certs
 
 - Use 'luaossl" directly instead of openssl binary
 
