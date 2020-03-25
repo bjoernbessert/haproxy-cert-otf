@@ -66,6 +66,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 - Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups (maybe not an improvement at all because of already existing filesystem cache)
 
 - HAProxy 2.1: Update EXISTING certificates at runtime is now possible (no reload needed), but not the creation of non-existing certs
+- HAProxy v2.2-dev5: Create new and update existing certificates at runtime is now possible (no reload needed)
 
 - Use 'luaossl" directly instead of openssl binary
 
