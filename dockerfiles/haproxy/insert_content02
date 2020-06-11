@@ -1,5 +1,5 @@
 
-ENV HAPROXY_GIT_URL "http://git.haproxy.org/git/haproxy.git/"
+ENV HAPROXY_GIT_URL "git@github.com:haproxy/haproxy.git"
 
 RUN set -x \
         \
