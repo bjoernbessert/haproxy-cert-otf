@@ -13,8 +13,43 @@ RUN echo Europe/Berlin >/etc/timezone && \
 RUN apt-get update && apt-get install -yq software-properties-common
 
 #START MARKER1
-RUN add-apt-repository -y ppa:vbernat/haproxy-$HAPROXY_MAIN_VERSION && apt-get update && \
-    apt-get install -yq haproxy=$HAPROXY_MAIN_VERSION.\* 
+
+ENV HAPROXY_GIT_URL "https://github.com/haproxy/haproxy.git"
+
+RUN set -x \
+        \
+        && apt-get update && apt-get install -y --no-install-recommends \
+                ca-certificates \
+                gcc \
+                libc6-dev \
+                liblua5.3-dev \
+                libpcre2-dev \
+                libssl-dev \
+                make \
+                zlib1g-dev \
+                git-core \
+        && cd /usr/src \
+        && git clone "$HAPROXY_GIT_URL" haproxy \
+        \
+        && makeOpts=' \
+                PREFIX=/usr \
+                TARGET=linux-glibc \
+                USE_GETADDRINFO=1 \
+                USE_LUA=1 LUA_INC=/usr/include/lua5.3 \
+                USE_OPENSSL=1 \
+                USE_PCRE2=1 USE_PCRE2_JIT=1 \
+                USE_ZLIB=1 \
+                \
+                EXTRA_OBJS="contrib/prometheus-exporter/service-prometheus.o" \
+        ' \
+        && nproc="$(nproc)" \
+        && eval "make -C /usr/src/haproxy -j '$nproc' all $makeOpts" \
+        && eval "make -C /usr/src/haproxy install-bin $makeOpts" \
+        \
+        && mkdir -p /etc/haproxy \
+        && cp -R /usr/src/haproxy/examples/errorfiles /etc/haproxy/errors \
+        && rm -rf /usr/src/haproxy
+
 #END MARKER1
 
 RUN apt-get install -yq lua-socket openssl
