@@ -116,9 +116,6 @@ end
 function get_cert_from_localca(domain)
     core.log(core.info, "Generate Cert trough local CA for domain: " .. domain)
 
-    local abc = os.execute("echo 'show info' | nc 127.0.0.1 10000")
-    core.log(core.info, tostring(abc))
-
     local success, term_type, rc_code = os.execute(cert_generate_cmd .. domain)
     if rc_code ~= 0 then
         error("Error while generating Cert trough local CA!: " .. tostring(success) .. " " .. tostring(term_type) .. " " .. tostring(rc_code))
@@ -231,4 +228,4 @@ function cert_otf(txn)
 
 end
 
-core.register_action("cert_otf", { "tcp-req", "http-req" }, cert_otf)
+core.register_action("cert_otf", { "tcp-req" }, cert_otf)
