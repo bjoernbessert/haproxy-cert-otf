@@ -72,7 +72,6 @@ COPY files/fallback.example.local.pem /etc/haproxy/certs/
 
 RUN mkdir /etc/haproxy/lua_files
 RUN rm -f /etc/haproxy/haproxy.cfg
-COPY files/haproxy_front.cfg /etc/haproxy/haproxy_front.cfg
 COPY files/haproxy_back.cfg  /etc/haproxy/haproxy_back.cfg
 
 # For local testing
