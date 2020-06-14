@@ -97,6 +97,7 @@ function get_cert_via_http(domain)
           if move_cert then
               core.log(core.info, "Execute HAProxy reload ...")
               os.execute(haproxy_reload_cmd)
+              core.msleep(2000)
 
           else
               --- TODO: Sometimes this is triggered when requests for the same FQDN arrive at the same time 
