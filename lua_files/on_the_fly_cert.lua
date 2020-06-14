@@ -12,9 +12,7 @@ core.log(core.info, "Use cert generation method: " .. get_cert_method)
 
 local haproxy_certs_dir = "/etc/haproxy/certs/"
 local haproxy_reload_cmd = '/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back'
-
 local cert_generate_cmd = '/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh '
-
 
 local http = require("socket.http")
 local io = require("io")
