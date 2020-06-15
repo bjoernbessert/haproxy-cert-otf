@@ -14,13 +14,13 @@ teardown() {
 }
 
 @test "Check if HAProxy map is created" {
-  sleep 1
+  clean_cert
+  sleep 2
   run check_map_with_entry_set_to_no
   [ "$status" -eq 0 ]
 }
 
 @test "Check cert generation: Fresh state" {
-  clean_cert
 
   run check_for_http_200
   [ "$status" -eq 0 ]

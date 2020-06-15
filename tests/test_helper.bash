@@ -36,7 +36,7 @@ function clean_docker()
 function clean_cert()
 {
   docker-compose exec haproxy bash -c 'rm -f /etc/haproxy/certs/sub1.example.local.pem'
-  docker-compose exec haproxy bash -c 'supervisorctl restart haproxy_back'
+  docker-compose exec haproxy bash -c 'supervisorctl restart haproxy_back ; sleep 2'
 }
 
 function check_map_with_entry_set_to_no()

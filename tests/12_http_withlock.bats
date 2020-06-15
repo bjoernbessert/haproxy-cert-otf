@@ -7,7 +7,12 @@ setup() {
   if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
     echo "# --- Test filename is $(basename ${BATS_TEST_FILENAME})" >&3
 
-    sleep 1
+    sleep 2
+
+    clean_cert
+
+    sleep 2
+
     docker-compose exec haproxy bash -c 'echo "set map /tmp/lock.map lock_cert yes" | nc 127.0.0.1 9999'
   fi
 }
@@ -23,7 +28,6 @@ teardown() {
 }
 
 @test "Check cert generation: Fresh state" {
-  clean_cert
 
   run check_for_curl_cert_error
   [ "$status" -eq 0 ]
