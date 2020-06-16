@@ -7,7 +7,7 @@ endif
 
 # Set "export UBUNTU_DOCKER_IMAGE=ubuntu:x", otherwise make will use a default value
 ifndef UBUNTU_DOCKER_IMAGE
-override UBUNTU_DOCKER_IMAGE = ubuntu:18.04
+override UBUNTU_DOCKER_IMAGE = ubuntu:20.04
 endif
 
 build:
