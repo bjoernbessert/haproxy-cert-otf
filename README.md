@@ -18,7 +18,8 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Details
 
-- Tested with (at least) the following HAProxy LTS releases: 1.8.25, 2.0.15, 2.2.0
+- Tested with (at least) the following HAProxy LTS releases: 2.2.0
+  - For prior versions (1.8.25, 2.0.15) see "legacy"-branch
 
 - HAProxy configs: [Link](dockerfiles/haproxy/files)
 
@@ -58,14 +59,11 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 ### Possible Improvements
 
 - Locking mechanism
-  - HAProxy 1.8:
+  - since HAProxy 1.8:
     - Currently used: HAProxy maps + get/set via Lua
     - Future: Use HAProxy stick-tables + get/set via Lua (maybe possible with HAProxy 1.9 ('get' is possible with 1.9: https://www.arpalert.org/src/haproxy-lua-api/1.9dev/index.html#sticktable-class), or connect with tcp socket to local tcp HAProxy socket to execute commands)
 
 - Load an index of all existing certs in memory on HAProxy startup (Lua + HAProxy stick-tables or Lua + HAProxy maps). Would save the filesystem lookups (maybe not an improvement at all because of already existing filesystem cache)
-
-- HAProxy 2.1: Update EXISTING certificates at runtime is now possible (no reload needed), but not the creation of non-existing certs
-- HAProxy v2.2-dev5: Create new and update existing certificates at runtime is now possible (no reload needed)
 
 - Use 'luaossl" directly instead of openssl binary
 
