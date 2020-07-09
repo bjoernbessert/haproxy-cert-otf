@@ -11,8 +11,7 @@ core.log(core.info, "Use cert generation method: " .. get_cert_method)
 
 
 local haproxy_certs_dir = "/etc/haproxy/certs/"
-local haproxy_reload_cmd = '/usr/bin/timeout 5 /usr/bin/supervisorctl restart haproxy_back'
-local cert_generate_cmd = '/usr/bin/timeout 5 /opt/generate-cert/create-cert.sh '
+local cert_generate_cmd = '/usr/bin/timeout 10 /opt/generate-cert/create-cert.sh '
 
 local http = require("socket.http")
 local io = require("io")
@@ -95,9 +94,13 @@ function get_cert_via_http(domain)
           move_cert = os.rename(fullpath_tmp, fullpath_dst)
 
           if move_cert then
-              core.log(core.info, "Execute HAProxy reload ...")
-              os.execute(haproxy_reload_cmd)
-              core.msleep(2000)
+              core.log(core.info, "Move cert operation successful")
+
+	      core.log(core.info, "Configure cert in HAProxy ...")
+	      local success, term_type, rc_code = os.execute(cert_generate_cmd .. domain .. " http")
+              if rc_code ~= 0 then
+                  error("Error while generating Cert trough local CA!: " .. tostring(success) .. " " .. tostring(term_type) .. " " .. tostring(rc_code))
+              end
 
           else
               --- TODO: Sometimes this is triggered when requests for the same FQDN arrive at the same time 
@@ -114,7 +117,7 @@ end
 function get_cert_from_localca(domain)
     core.log(core.info, "Generate Cert trough local CA for domain: " .. domain)
 
-    local success, term_type, rc_code = os.execute(cert_generate_cmd .. domain)
+    local success, term_type, rc_code = os.execute(cert_generate_cmd .. domain .. " local_ca")
     if rc_code ~= 0 then
         error("Error while generating Cert trough local CA!: " .. tostring(success) .. " " .. tostring(term_type) .. " " .. tostring(rc_code))
     end
