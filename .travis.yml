@@ -7,8 +7,7 @@ services:
 
 env:
   - UBUNTU_DOCKER_IMAGE=ubuntu:20.04 HAPROXY_MAIN_VERSION=2.2
-  - UBUNTU_DOCKER_IMAGE=ubuntu:20.04 HAPROXY_MAIN_VERSION=2.0
-  - UBUNTU_DOCKER_IMAGE=ubuntu:18.04 HAPROXY_MAIN_VERSION=1.8
+  - UBUNTU_DOCKER_IMAGE=ubuntu:18.04 HAPROXY_MAIN_VERSION=2.2
 
 before_install:
   - sudo rm -f /etc/apt/sources.list.d/pgdg.list
@@ -32,4 +31,3 @@ after_script:
 notifications:
   email:
     - haproxy.cert.otf.travis@gmail.com
-
