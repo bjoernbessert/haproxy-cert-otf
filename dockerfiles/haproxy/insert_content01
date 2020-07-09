@@ -1,6 +1,6 @@
 
-#ENV HAPROXY_GIT_URL "https://git.haproxy.org/git/haproxy-2.1.git/"
-ENV HAPROXY_GIT_URL "https://github.com/bjoernbessert/haproxy-mirror-haproxy-2.1.git"
+#ENV HAPROXY_GIT_URL "https://git.haproxy.org/git/haproxy-2.2.git/"
+ENV HAPROXY_GIT_URL "https://github.com/bjoernbessert/haproxy-mirror-haproxy-2.2.git"
 
 RUN set -x \
         \

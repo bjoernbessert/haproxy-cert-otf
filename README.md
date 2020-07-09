@@ -18,7 +18,7 @@ Create SSL certificates on the fly with HAProxy. With the help of Lua the certif
 
 ### Details
 
-- Tested with (at least) HAProxy 1.8.25, 2.0.15, 2.1.7
+- Tested with (at least) the following HAProxy LTS releases: 1.8.25, 2.0.15, 2.2.0
 
 - HAProxy configs: [Link](dockerfiles/haproxy/files)
 
