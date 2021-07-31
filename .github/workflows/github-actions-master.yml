@@ -1,8 +1,19 @@
-name: GitHub Actions Demo
+name: haproxy-cert-otf CI
+
 on: [push]
+
 jobs:
-  Explore-GitHub-Actions:
+  build_01:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - node-version: 10.x
+            site: "prod"
+            datacenter: "site-a"
+          - node-version: 12.x
+            site: "dev"
+            datacenter: "site-b"
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -15,3 +26,43 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Echo site details
+        env:
+          SITE: ${{ matrix.site }}
+          DATACENTER: ${{ matrix.datacenter }}
+          NODE-VERSION: ${{ matrix.node-version }}
+        run: echo $SITE $DATACENTER $NODE-VERSION
+      - run: sudo apt-get update && sudo apt-get -y install bats
+
+
+
+#env:
+#  - UBUNTU_DOCKER_IMAGE=ubuntu:20.04 HAPROXY_MAIN_VERSION=2.2
+#  - UBUNTU_DOCKER_IMAGE=ubuntu:18.04 HAPROXY_MAIN_VERSION=2.2
+
+
+#before_install:
+#  - sudo rm -f /etc/apt/sources.list.d/pgdg.list
+#  - travis_retry sudo apt-get update
+#  - travis_retry sudo apt-get -y install bats
+
+
+#install:
+#  - cd dockerfiles/apache
+#  - travis_retry make build-without-cache
+#  - cd "$TRAVIS_BUILD_DIR"
+#  - cd dockerfiles/haproxy
+#  - travis_retry make build-without-cache
+#  - cd "$TRAVIS_BUILD_DIR"
+
+#script:
+#  - make test
+
+#after_script:
+#  - make clean
+
+#notifications:
+#  email:
+#    - haproxy.cert.otf.travis@gmail.com
+
+
