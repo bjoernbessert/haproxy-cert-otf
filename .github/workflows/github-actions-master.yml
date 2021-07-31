@@ -11,15 +11,13 @@ jobs:
     #runs-on: ubuntu-latest
     runs-on: ubuntu-20.04
     env:
-       SITE: ${{ matrix.site }}
-       DATACENTER: ${{ matrix.datacenter }}
-       NODEVERSION: ${{ matrix.node-version }}
+       UBUNTU_DOCKER_IMAGE: ${{ matrix.UBUNTU_DOCKER_IMAGE }}
+       HAPROXY_MAIN_VERSION: ${{ matrix.HAPROXY_MAIN_VERSION }}
     strategy:
       matrix:
         include:
-          - node-version: 10.x
-            site: "prod"
-            datacenter: "site-a"
+          - UBUNTU_DOCKER_IMAGE: "ubuntu:20.04"
+            HAPROXY_MAIN_VERSION: "2.4"
           #- node-version: 12.x
           #  site: "dev"
           #  datacenter: "site-b"
@@ -43,7 +41,7 @@ jobs:
 #          NODEVERSION: ${{ matrix.node-version }}
 #        run: echo $SITE $DATACENTER $NODEVERSION
 
-      - run: echo $SITE $DATACENTER $NODEVERSION
+      - run: echo $UBUNTU_DOCKER_IMAGE $HAPROXY_MAIN_VERSION
 
       - run: sudo apt-get update && sudo apt-get -y install bats
       - run: echo ${{ github.workspace }}
