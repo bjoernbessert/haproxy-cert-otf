@@ -1,5 +1,5 @@
-- master:  [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=master)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf/branches)  
-- master2: ![Build Status](https://github.com/bjoernbessert/haproxy-cert-otf/actions/workflows/master.yml/badge.svg?branch=master)
+- master (Github Actions): [![Build Status](https://github.com/bjoernbessert/haproxy-cert-otf/actions/workflows/master.yml/badge.svg)](https://github.com/bjoernbessert/haproxy-cert-otf/actions)
+- master (travis):  [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=master)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf/branches)  
 - travis_ubuntu_haproxy_latest: [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=travis_ubuntu_haproxy_latest)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf/branches)
 - travis_ubuntu_haproxy_latest_stable_git: [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=travis_ubuntu_haproxy_latest_stable_git)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf/branches)
 - travis_ubuntu_haproxy_latest_development_git: [![Build Status](https://travis-ci.com/bjoernbessert/haproxy-cert-otf.svg?branch=travis_ubuntu_haproxy_latest_development_git)](https://travis-ci.com/bjoernbessert/haproxy-cert-otf/branches)
