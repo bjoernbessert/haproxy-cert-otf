@@ -17,7 +17,7 @@ jobs:
       matrix:
         include:
           - UBUNTU_DOCKER_IMAGE: "ubuntu:20.04"
-            HAPROXY_MAIN_VERSION: "2.4"
+            HAPROXY_MAIN_VERSION: "2.2"
           #- node-version: 12.x
           #  site: "dev"
           #  datacenter: "site-b"
