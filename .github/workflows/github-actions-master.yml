@@ -12,9 +12,9 @@ jobs:
           - node-version: 10.x
             site: "prod"
             datacenter: "site-a"
-          - node-version: 12.x
-            site: "dev"
-            datacenter: "site-b"
+          #- node-version: 12.x
+          #  site: "dev"
+          #  datacenter: "site-b"
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -36,12 +36,14 @@ jobs:
       - run: sudo apt-get update && sudo apt-get -y install bats
       - run: echo ${{ github.workspace }}
       - run: pwd
-      - run: cd dockerfiles/apache
+     #- run: cd dockerfiles/apache
       - run: pwd
       - run: make build-without-cache
+        working-directory: ./dockerfiles/apache
       - run: cd ${{ github.workspace }}
-      - run: cd dockerfiles/haproxy
+     #- run: cd dockerfiles/haproxy
       - run: make build-without-cache
+        working-directory: ./dockerfiles/haproxy
       - run: cd ${{ github.workspace }}
 
 #env:
