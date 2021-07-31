@@ -27,18 +27,13 @@ jobs:
 
       - name: Check out repository code
         uses: actions/checkout@v2
-
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
 
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Debug-Output
+        run: echo $UBUNTU_DOCKER_IMAGE $HAPROXY_MAIN_VERSION
 
-      - run: echo $UBUNTU_DOCKER_IMAGE $HAPROXY_MAIN_VERSION
-
-      - run: sudo apt-get update && sudo apt-get -y install bats
+      - name: Install bats
+        run: sudo apt-get update && sudo apt-get -y install bats
 
       - name: build apache dockerimage
         run: make build-without-cache
@@ -54,11 +49,6 @@ jobs:
       - name: Cleanup
         run: make clean
 
-#script:
-#  - make test
-
-#after_script:
-#  - make clean
 
 #notifications:
 #  email:
