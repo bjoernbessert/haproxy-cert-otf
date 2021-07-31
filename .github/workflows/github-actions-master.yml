@@ -34,13 +34,10 @@ jobs:
           NODEVERSION: ${{ matrix.node-version }}
         run: echo $SITE $DATACENTER $NODEVERSION
       - run: sudo apt-get update && sudo apt-get -y install bats
-
       - run: echo ${{ github.workspace }}
       - run: pwd
-
       - run: cd dockerfiles/apache
       - run: pwd
-
       - run: make build-without-cache
       - run: cd ${{ github.workspace }}
       - run: cd dockerfiles/haproxy
