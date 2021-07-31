@@ -17,63 +17,42 @@ jobs:
       matrix:
         include:
           - UBUNTU_DOCKER_IMAGE: "ubuntu:20.04"
-            HAPROXY_MAIN_VERSION: "2.2"
-          #- node-version: 12.x
-          #  site: "dev"
-          #  datacenter: "site-b"
+            HAPROXY_MAIN_VERSION: "2.4"
+#          - UBUNTU_DOCKER_IMAGE: "ubuntu:18.04"
+#            HAPROXY_MAIN_VERSION: "2.4"
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
       - name: Check out repository code
         uses: actions/checkout@v2
+
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-#      - name: Echo site details
-#        env:
-#          SITE: ${{ matrix.site }}
-#          DATACENTER: ${{ matrix.datacenter }}
-#          NODEVERSION: ${{ matrix.node-version }}
-#        run: echo $SITE $DATACENTER $NODEVERSION
-
       - run: echo $UBUNTU_DOCKER_IMAGE $HAPROXY_MAIN_VERSION
 
       - run: sudo apt-get update && sudo apt-get -y install bats
-      - run: echo ${{ github.workspace }}
-      - run: pwd
-     #- run: cd dockerfiles/apache
-      - run: pwd
-      - run: make build-without-cache
+
+      - name: build apache dockerimage
+        run: make build-without-cache
         working-directory: ./dockerfiles/apache
-      - run: cd ${{ github.workspace }}
-     #- run: cd dockerfiles/haproxy
-      - run: make build-without-cache
+
+      - name: build haproxy dockerimage
+        run: make build-without-cache
         working-directory: ./dockerfiles/haproxy
-      - run: cd ${{ github.workspace }}
 
-#env:
-#  - UBUNTU_DOCKER_IMAGE=ubuntu:20.04 HAPROXY_MAIN_VERSION=2.2
-#  - UBUNTU_DOCKER_IMAGE=ubuntu:18.04 HAPROXY_MAIN_VERSION=2.2
+      - name: Execute testsuite
+        run: make test
 
-
-#before_install:
-#  - sudo rm -f /etc/apt/sources.list.d/pgdg.list
-#  - travis_retry sudo apt-get update
-#  - travis_retry sudo apt-get -y install bats
-
-
-#install:
-#  - cd dockerfiles/apache
-#  - travis_retry make build-without-cache
-#  - cd "$TRAVIS_BUILD_DIR"
-#  - cd dockerfiles/haproxy
-#  - travis_retry make build-without-cache
-#  - cd "$TRAVIS_BUILD_DIR"
+      - name: Cleanup
+        run: make clean
 
 #script:
 #  - make test
@@ -84,5 +63,4 @@ jobs:
 #notifications:
 #  email:
 #    - haproxy.cert.otf.travis@gmail.com
-
 
