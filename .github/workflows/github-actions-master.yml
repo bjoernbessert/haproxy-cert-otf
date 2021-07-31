@@ -4,7 +4,8 @@ on: [push]
 
 jobs:
   build_01:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         include:
@@ -30,8 +31,8 @@ jobs:
         env:
           SITE: ${{ matrix.site }}
           DATACENTER: ${{ matrix.datacenter }}
-          NODE-VERSION: ${{ matrix.node-version }}
-        run: echo $SITE $DATACENTER $NODE-VERSION
+          NODEVERSION: ${{ matrix.node-version }}
+        run: echo $SITE $DATACENTER $NODEVERSION
       - run: sudo apt-get update && sudo apt-get -y install bats
 
 
