@@ -1,7 +1,6 @@
 name: haproxy-cert-otf CI
 
 on: [push]
-
 #on:
 #  schedule:
 #    - cron:  '30 23 * * *'
@@ -27,6 +26,7 @@ jobs:
 
       - name: Check out repository code
         uses: actions/checkout@v2
+
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       - name: Debug-Output
@@ -35,29 +35,16 @@ jobs:
       - name: Install bats
         run: sudo apt-get update && sudo apt-get -y install bats
 
-      - name: build apache dockerimage
+      - name: Build apache dockerimage
         run: make build-without-cache
         working-directory: ./dockerfiles/apache
 
-      - name: build haproxy dockerimage
+      - name: Build haproxy dockerimage
         run: make build-without-cache
         working-directory: ./dockerfiles/haproxy
 
       - name: Execute testsuite
-        #run: make test
-        run: docker-compose up -d
-
-      - name: Debug
-        run: docker-compose ps
-
-      - name: Debug
-        run: docker-compose exec -T haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"'
+        run: make test
 
       - name: Cleanup
         run: make clean
-
-
-#notifications:
-#  email:
-#    - haproxy.cert.otf.travis@gmail.com
-
