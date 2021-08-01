@@ -35,10 +35,20 @@ function clean_docker()
 
 function clean_cert()
 {
+
+  echo `date` >> /tmp/debug.log
+  echo "clean_cert: debug0" >> /tmp/debug.log
+  docker-compose ps >> /tmp/debug.log
+  docker ps >> /tmp/debug.log
+
+  echo `date` >> /tmp/debug.log
   echo "clean_cert: 1" >> /tmp/debug.log
   docker-compose exec -T haproxy bash -c 'rm -f /etc/haproxy/certs/sub1.example.local.pem' >> /tmp/debug.log
-  echo "clean_cert: 1" >> /tmp/debug.log
+
+  echo `date` >> /tmp/debug.log
+  echo "clean_cert: 2" >> /tmp/debug.log
   docker-compose exec -T haproxy bash -c 'supervisorctl restart haproxy ; sleep 2' >> /tmp/debug.log
+
 }
 
 function check_map_with_entry_set_to_no()
