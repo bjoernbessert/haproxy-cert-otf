@@ -8,7 +8,7 @@ METHOD="${2}"
 BASEDIR="/opt/generate-cert/"
 HAPROXY_CERT_DIR='/etc/haproxy/certs/'
 HAPROXY_CRT_STORE='/etc/haproxy/certs'
-HAPROXY_SOCKET='/var/run/haproxy-back.sock'
+HAPROXY_SOCKET='/var/run/haproxy.sock'
 
 
 local_ca () {
@@ -35,10 +35,9 @@ http () {
 
 
 configure_cert_in_haproxy () {
-  #echo "Debug 1:"
   echo "${HAPROXY_CERT_DIR}${FQDN}.pem"
 
-  # TODO: Why is thhis needed? Seems to active the socket or something
+  # TODO: Why is this needed? Seems to active the socket or something
   echo "show info" | socat ${HAPROXY_SOCKET}  -
 
   echo "new ssl cert ${HAPROXY_CERT_DIR}${FQDN}.pem" | socat ${HAPROXY_SOCKET} -
