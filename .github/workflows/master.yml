@@ -51,19 +51,7 @@ jobs:
         run: docker-compose ps
 
       - name: Debug
-        run: docker-compose exec haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"'
-
-      - name: Cleanup
-        run: make clean
-
-
-#notifications:
-#  email:
-#    - haproxy.cert.otf.travis@gmail.com
-
-      - name: Debug
-        run: docker-compose exec haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"'
-
+        run: docker-compose exec -T haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"'
 
       - name: Cleanup
         run: make clean

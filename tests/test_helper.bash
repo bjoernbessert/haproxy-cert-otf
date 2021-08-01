@@ -8,7 +8,7 @@ function start_docker_stack()
 
     # Wait until haproxy container is truly ready
     for i in {1..150}; do
-        run docker-compose exec haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"'
+        run docker-compose exec -T haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"'
         if [ "$status" -eq 0 ]; then
             break
         fi
@@ -20,7 +20,7 @@ function start_docker_stack()
     done
 
     #sleep 5
-    docker-compose exec haproxy bash -c 'echo "127.0.0.1 sub1.example.local" >> /etc/hosts'
+    docker-compose exec -T haproxy bash -c 'echo "127.0.0.1 sub1.example.local" >> /etc/hosts'
   fi
 }
 
@@ -35,27 +35,27 @@ function clean_docker()
 
 function clean_cert()
 {
-  docker-compose exec haproxy bash -c 'rm -f /etc/haproxy/certs/sub1.example.local.pem'
-  docker-compose exec haproxy bash -c 'supervisorctl restart haproxy ; sleep 2'
+  docker-compose exec -T haproxy bash -c 'rm -f /etc/haproxy/certs/sub1.example.local.pem'
+  docker-compose exec -T haproxy bash -c 'supervisorctl restart haproxy ; sleep 2'
 }
 
 function check_map_with_entry_set_to_no()
 {
-  docker-compose exec haproxy bash -c 'echo "show map /tmp/lock.map" | nc 127.0.0.1 9999 | grep "lock_cert no"'
+  docker-compose exec -T haproxy bash -c 'echo "show map /tmp/lock.map" | nc 127.0.0.1 9999 | grep "lock_cert no"'
 }
 
 function check_map_with_entry_set_to_yes()
 {
-  docker-compose exec haproxy bash -c 'echo "show map /tmp/lock.map" | nc 127.0.0.1 9999 | grep "lock_cert yes"'
+  docker-compose exec -T haproxy bash -c 'echo "show map /tmp/lock.map" | nc 127.0.0.1 9999 | grep "lock_cert yes"'
 }
 
 function check_for_http_200()
 {
-  docker-compose exec haproxy bash -c "curl -I -s 'https://sub1.example.local' | grep 'HTTP/1.1 200 OK'"
+  docker-compose exec -T haproxy bash -c "curl -I -s 'https://sub1.example.local' | grep 'HTTP/1.1 200 OK'"
 }
 
 function check_for_curl_cert_error()
 {
-  docker-compose exec haproxy bash -c "curl -I 'https://sub1.example.local' 2>&1 | grep 'SSL: no alternative certificate subject name matches target host name'"
+  docker-compose exec -T haproxy bash -c "curl -I 'https://sub1.example.local' 2>&1 | grep 'SSL: no alternative certificate subject name matches target host name'"
 }
 

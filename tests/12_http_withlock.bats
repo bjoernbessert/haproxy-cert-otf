@@ -13,7 +13,7 @@ setup() {
 
     sleep 2
 
-    docker-compose exec haproxy bash -c 'echo "set map /tmp/lock.map lock_cert yes" | nc 127.0.0.1 9999'
+    docker-compose exec -T haproxy bash -c 'echo "set map /tmp/lock.map lock_cert yes" | nc 127.0.0.1 9999'
   fi
 }
 
