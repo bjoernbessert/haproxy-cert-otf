@@ -46,5 +46,9 @@ jobs:
       - name: Execute testsuite
         run: make test
 
+      - name: Show Debug-Log
+        if: ${{ always() }}
+        run: cat /tmp/debug.log
+
       - name: Cleanup
         run: make clean
