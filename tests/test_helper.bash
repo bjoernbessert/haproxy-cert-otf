@@ -8,7 +8,7 @@ function start_docker_stack()
 
     # Wait until haproxy container is truly ready
     for i in {1..150}; do
-        run docker-compose exec -T haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"'
+        run docker-compose exec -T haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"' >> /tmp/debug.log
         if [ "$status" -eq 0 ]; then
             break
         fi
@@ -20,7 +20,7 @@ function start_docker_stack()
     done
 
     #sleep 5
-    docker-compose exec -T haproxy bash -c 'echo "127.0.0.1 sub1.example.local" >> /etc/hosts'
+    docker-compose exec -T haproxy bash -c 'echo "127.0.0.1 sub1.example.local" >> /etc/hosts' >> /tmp/debug.log
   fi
 }
 
