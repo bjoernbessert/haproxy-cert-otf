@@ -20,8 +20,8 @@ jobs:
         include:
           - UBUNTU_DOCKER_IMAGE: "ubuntu:20.04"
             HAPROXY_MAIN_VERSION: "2.4"
-#          - UBUNTU_DOCKER_IMAGE: "ubuntu:18.04"
-#            HAPROXY_MAIN_VERSION: "2.4"
+          - UBUNTU_DOCKER_IMAGE: "ubuntu:18.04"
+            HAPROXY_MAIN_VERSION: "2.4"
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
