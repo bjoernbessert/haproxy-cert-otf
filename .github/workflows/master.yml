@@ -1,9 +1,10 @@
 name: haproxy-cert-otf CI
 
-on: [push]
-#on:
-#  schedule:
-#    - cron:  '30 23 * * *'
+#on: [push]
+on:
+  push:
+  schedule:
+    - cron:  '30 23 * * *'
 
 jobs:
   build_01:
