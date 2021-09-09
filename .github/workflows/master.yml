@@ -2,6 +2,7 @@ name: haproxy-cert-otf CI
 
 #on: [push]
 on:
+  workflow_dispatch:
   push:
   schedule:
     - cron:  '30 23 * * *'
