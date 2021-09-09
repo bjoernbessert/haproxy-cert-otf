@@ -14,6 +14,12 @@ teardown() {
 }
 
 @test "Check if HAProxy map is created" {
+
+  echo `date` >> /tmp/debug.log
+  echo "clean_cert: debug 02_http" >> /tmp/debug.log
+  docker-compose ps >> /tmp/debug.log
+  docker ps >> /tmp/debug.log
+
   clean_cert
   sleep 2
   run check_map_with_entry_set_to_no
