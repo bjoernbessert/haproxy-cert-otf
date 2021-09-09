@@ -2,14 +2,23 @@ function start_docker_stack()
 {
   local METHOD="$1"
 
+  echo `date` >> /tmp/debug.log
+  echo "test_helper: debug01" >> /tmp/debug.log
+  echo "$BATS_TEST_NUMBER" >> /tmp/debug.log
+
   if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
+
+    echo `date` >> /tmp/debug.log
+    echo "test_helper: debug02" >> /tmp/debug.log
+
+
     export "GET_CERT_METHOD=$METHOD"
-    timeout 120 docker-compose up -d
+    timeout 120 docker-compose up -d >> /tmp/debug.log
 
     # Wait until haproxy container is truly ready
     for i in {1..150}; do
         echo `date` >> /tmp/debug.log
-        echo "test_helper: debug01" >> /tmp/debug.log
+        echo "test_helper: debug03" >> /tmp/debug.log
         run docker-compose exec -T haproxy bash -c 'echo "show info" | nc 127.0.0.1 9999 | grep "Uptime:"' >> /tmp/debug.log
         if [ "$status" -eq 0 ]; then
             break
@@ -23,7 +32,7 @@ function start_docker_stack()
 
     #sleep 5
     echo `date` >> /tmp/debug.log
-    echo "test_helper: debug02" >> /tmp/debug.log
+    echo "test_helper: debug04" >> /tmp/debug.log
     docker-compose exec -T haproxy bash -c 'echo "127.0.0.1 sub1.example.local" >> /etc/hosts' >> /tmp/debug.log
   fi
 }
