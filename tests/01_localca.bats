@@ -3,6 +3,9 @@
 load test_helper
 
 setup() {
+  echo `date` >> /tmp/debug.log
+  echo "01_localca: debug01" >> /tmp/debug.log
+
   start_docker_stack localca
   if [ "$BATS_TEST_NUMBER" -eq 1 ]; then
     echo "# --- Test filename is $(basename ${BATS_TEST_FILENAME})" >&3
