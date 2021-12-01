@@ -10,18 +10,20 @@ HAPROXY_CERT_DIR='/etc/haproxy/certs/'
 HAPROXY_CRT_STORE='/etc/haproxy/certs'
 HAPROXY_SOCKET='/var/run/haproxy.sock'
 
+CA_PRIVATE_KEY='../ca.key'
+CA_CERT='../ca.crt'
 
 local_ca () {
   mkdir -p $BASEDIR/certs_tmp
   cd $BASEDIR/certs_tmp
 
-  openssl genrsa -out ${FQDN}.key 2048
+  openssl ecparam -name prime256v1 -genkey -noout -out ${FQDN}.key
 
   openssl req -subj "/CN=${FQDN}" -extensions v3_req -sha256 -new -key ${FQDN}.key -out ${FQDN}.csr
 
-  openssl x509 -req -set_serial "0x$(openssl rand -hex 16)" -extensions v3_req -days 398 -sha256 -in ${FQDN}.csr -CA ../ca.crt -CAkey ../ca.key -CAcreateserial -out ${FQDN}.crt -extfile <(sed "s/subjectAltName = placeholder/subjectAltName = DNS:${FQDN}/" ../server_cert.cnf)
+  openssl x509 -req -set_serial "0x$(openssl rand -hex 16)" -extensions v3_req -days 398 -sha256 -in ${FQDN}.csr -CA $CA_CERT -CAkey $CA_PRIVATE_KEY -CAcreateserial -out ${FQDN}.crt -extfile <(sed "s/subjectAltName = placeholder/subjectAltName = DNS:${FQDN}/" ../server_cert.cnf)
 
-  cat ${FQDN}.crt ../ca.crt ${FQDN}.key > ${FQDN}.pem
+  cat ${FQDN}.crt $CA_CERT ${FQDN}.key > ${FQDN}.pem
 
   mv -f ${FQDN}.pem ${HAPROXY_CERT_DIR}
 
